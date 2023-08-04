@@ -54,7 +54,7 @@ public class TriggerBot implements NativeKeyListener {
                 .toList()) {
             //The greater the distance the smaller the acceptable FOV for the trigger
             //increase the numbers for more loose trigger and decrease the number for more strict trigger
-            final double YAW_EPSILON = 400f / p.distanceToLocalPlayer;
+            final double YAW_EPSILON = 200f / p.distanceToLocalPlayer;
             if (Math.abs(p.desiredYaw - localPlayer.viewAngles.y) < YAW_EPSILON) {
                 robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
                 robot.delay(5);
@@ -72,7 +72,7 @@ public class TriggerBot implements NativeKeyListener {
         if (NativeKeyEvent.getKeyText(e.getKeyCode()).equals("Shift")) {
             triggerDown = !triggerDown;
             if (triggerDown) Util.playSound("sound_beep1.wav");
-            else Util.playSound("sound_beep2.wav");
+            else Util.playSound("bass.wav");
         }
     }
 
