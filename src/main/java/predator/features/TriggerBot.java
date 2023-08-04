@@ -6,6 +6,7 @@ import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import predator.core.LocalPlayer;
 import predator.core.Player;
+import predator.core.Util;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -53,30 +54,27 @@ public class TriggerBot implements NativeKeyListener {
                 .toList()) {
             //The greater the distance the smaller the acceptable FOV for the trigger
             //increase the numbers for more loose trigger and decrease the number for more strict trigger
-            final double PITCH_EPSILON = 1500f / p.distanceToLocalPlayer;
             final double YAW_EPSILON = 400f / p.distanceToLocalPlayer;
-//            if (Math.abs(p.desiredPitch - localPlayer.viewAngles.x) < PITCH_EPSILON)
-                if (Math.abs(p.desiredYaw - localPlayer.viewAngles.y) < YAW_EPSILON) {
-                    robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-                    robot.delay(5);
-                    robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-                    robot.delay(5);
-                    robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-                    timeLastShot = System.currentTimeMillis();
-                    break;
-                }
+            if (Math.abs(p.desiredYaw - localPlayer.viewAngles.y) < YAW_EPSILON) {
+                robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+                robot.delay(5);
+                robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+                robot.delay(5);
+                robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+                timeLastShot = System.currentTimeMillis();
+                break;
+            }
         }
     }
 
     @Override
-    public void nativeKeyPressed(NativeKeyEvent e) {
-        if (NativeKeyEvent.getKeyText(e.getKeyCode()).equals("Shift"))
-            triggerDown = true;
+    public void nativeKeyReleased(NativeKeyEvent e) {
+        if (NativeKeyEvent.getKeyText(e.getKeyCode()).equals("Shift")) {
+            triggerDown = !triggerDown;
+            if (triggerDown) Util.playSound("sound_beep1.wav");
+            else Util.playSound("sound_beep2.wav");
+        }
     }
 
-    @Override
-    public void nativeKeyReleased(NativeKeyEvent e) {
-        if (NativeKeyEvent.getKeyText(e.getKeyCode()).equals("Shift"))
-            triggerDown = false;
-    }
+
 }

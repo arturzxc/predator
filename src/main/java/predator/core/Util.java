@@ -1,14 +1,11 @@
 package predator.core;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class Util {
 
@@ -61,15 +58,36 @@ public class Util {
         }
     }
 
-//    public static List<Player> getEnemyPlayers(LocalPlayer localPlayer, List<Player> entities) {
-//        List<Player> myEnemyEntities = new ArrayList<>();
-//        for (Player player : entities) {
-//            if (player.baseEntity.base == null) continue;
-//            if (player.dead == null || player.dead) continue;
-//            if (Objects.equals(localPlayer.base, player.baseEntity.base)) continue;
-//            if (!Objects.equals(localPlayer.teamNumber, player.baseEntity.teamNumber)) myEnemyEntities.add(player);
-//        }
-//        return myEnemyEntities;
-//    }
+    public static void playSound(String fileName) {
+        try {
+            File f = loadResourceAsFile(fileName);
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(f.toURI().toURL());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+
+    public static File loadResourceAsFile(String fileName) {
+        ClassLoader classLoader = Util.class.getClassLoader();
+        try (InputStream inputStream = classLoader.getResourceAsStream(fileName)) {
+            if (inputStream == null)
+                throw new IllegalArgumentException("Resource not found: " + fileName);
+            File tempFile = File.createTempFile("resource", fileName);
+            try (FileOutputStream outputStream = new FileOutputStream(tempFile)) {
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, length);
+                }
+            }
+            return tempFile;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
