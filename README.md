@@ -14,11 +14,11 @@
 ```
 git clone https://github.com/arturzxc/predator.git
 ```
-### Open a terminal and navigate to the project directory
+### Navigate to the project directory
 ```
 cd predator
 ```
-### Compile the code with Maven
+### Compile the code
 ```
 mvn clean install
 ```
