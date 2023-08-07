@@ -41,9 +41,7 @@ public class TriggerBot implements NativeKeyListener {
     public void update() {
         if (!triggerDown) return;
         if (localPlayer.base == null) return;
-        if (localPlayer.inAttack) return;
         if (!localPlayer.inZoom) return;
-
         final int MILLIS_BETWEEN_SHOTS = 10;
         if (timeLastShot != null)
             if (System.currentTimeMillis() - timeLastShot < MILLIS_BETWEEN_SHOTS)
