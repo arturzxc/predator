@@ -1,26 +1,28 @@
 package predator.features;
 
 import predator.core.Player;
-
-import java.util.List;
+import predator.core.PlayerList;
+import predator.core.Util;
 
 public class Sense {
 
-    private final List<Player> players;
+    private final PlayerList playerList;
+    private double maxDistance = Util.convertMetersToHammerUnits(300);
 
-    public Sense(List<Player> players) {
-        this.players = players;
+    public Sense(PlayerList playerList) {
+        this.playerList = playerList;
     }
 
     public void update() {
-        for (Player p : players.stream()
-                .filter(p -> p.base != null)
-                .filter(p -> p.visible != null)
-                .filter(p -> p.isFriendlyPlayer != null && !p.isFriendlyPlayer)
-                .toList()) {
-            if (p.visible) p.glowCaustic();
-            else p.glowMadMaggie();
-        }
+        playerList.getVisibleEnemies().forEach(Player::glowCaustic);
+        playerList.getInVisibleEnemies().forEach(Player::glowMadMaggie);
     }
 
+    public int getMaxDistanceInMeters() {
+        return Util.convertHammerUnitsToMeters(maxDistance);
+    }
+
+    public void setMaxDistanceInMeters(int maxDistance) {
+        this.maxDistance = Util.convertMetersToHammerUnits(maxDistance);
+    }
 }

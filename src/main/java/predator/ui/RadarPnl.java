@@ -1,4 +1,4 @@
-package predator.features;
+package predator.ui;
 
 import predator.core.*;
 
@@ -8,35 +8,28 @@ import java.awt.geom.AffineTransform;
 import java.util.List;
 import java.util.*;
 
-public class Radar extends JPanel {
+public class RadarPnl extends JPanel {
 
     private final int DOT_SIZE = 10;
     private final int DOT_SIZE_HALF = DOT_SIZE / 2;
     private final Level level;
     private final LocalPlayer localPlayer;
-    private final List<Player> players;
+    private final PlayerList playerList;
     private List<Player> myFriendlyEntities;
     private List<Player> myEnemyEntities;
     private final Map<Integer, Color> myColorMap;
 
-    public Radar(Level level, LocalPlayer localPlayer, List<Player> players) {
+    public RadarPnl(Level level, LocalPlayer localPlayer, PlayerList playerList) {
         this.level = level;
         this.localPlayer = localPlayer;
-        this.players = players;
+        this.playerList = playerList;
         this.myColorMap = getRandomColors();
         setBackground(Color.black);
     }
 
     private void filterPlayers() {
-        myFriendlyEntities = new ArrayList<>();
-        myEnemyEntities = new ArrayList<>();
-        for (Player player : players) {
-            if (player.base == null) continue;
-            if (player.dead == null || player.dead) continue;
-            if (player.isLocalPlayer == null || player.isLocalPlayer) continue;
-            if (player.isFriendlyPlayer != null && player.isFriendlyPlayer) myFriendlyEntities.add(player);
-            else myEnemyEntities.add(player);
-        }
+        myFriendlyEntities = playerList.getFriendlies();
+        myEnemyEntities = playerList.getEnemies();
     }
 
     @Override

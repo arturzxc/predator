@@ -3,7 +3,6 @@ package predator.core;
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
@@ -13,16 +12,23 @@ import java.util.Arrays;
 @SuppressWarnings("unused")
 public class Mem {
 
-    private static int pid;
+    public static int pid;
 
-    public static void findGamePID() {
-        try {
-            String targetProcessId = Util.executeCommand("pidof -s R5Apex.exe");
-            System.out.println("PID: " + targetProcessId);
-            pid = Integer.parseInt(targetProcessId.replace("\n", ""));
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "OPEN THE GAME NOOB!");
-            System.exit(-1);
+    public static void AwaitPID() {
+        while (true) {
+            try {
+                String targetProcessId = Util.executeCommand("pidof -s R5Apex.exe");
+                System.out.println("Game found! PID: " + targetProcessId);
+                pid = Integer.parseInt(targetProcessId.replace("\n", ""));
+                break;
+            } catch (Exception ex) {
+                System.out.println("Waiting for you to open the game");
+                try {
+                    Thread.sleep(1000 * 10);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 
@@ -74,6 +80,12 @@ public class Mem {
         byte[] memoryData = Mem.readMemory(pid, Pointer.nativeValue(pointer), Short.BYTES);
         if (memoryData.length == 0) throw new RuntimeException(" Empty memoryData");
         return ByteBuffer.wrap(memoryData).getShort();
+    }
+
+    public static void writeShort(Pointer pointer, Short num) {
+        if (num == null) throw new RuntimeException("Invalid num");
+        byte[] memoryData = Util.shortToBytes(num);
+        writeMemory(pid, Pointer.nativeValue(pointer), memoryData);
     }
 
     public static Float readFloat(Pointer pointer) {

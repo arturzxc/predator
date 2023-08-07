@@ -1,21 +1,22 @@
-package predator.features;
+package predator.ui;
 
 import predator.core.Player;
+import predator.core.PlayerList;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
-public class PlayersInspector extends JPanel {
-    private final List<Player> players;
+public class PlayersPnl extends JPanel {
+    private final PlayerList playerList;
     private final JLabel[][] cells;
+    private final JButton[] headers;
 
-    public PlayersInspector(List<Player> players) {
-        this.players = players;
+    public PlayersPnl(PlayerList playerList) {
+        this.playerList = playerList;
 
         //headers
         Font monospacedFont = new Font(Font.MONOSPACED, Font.PLAIN, 11);
-        JButton[] headers = new JButton[]{
+        headers = new JButton[]{
                 new JButton("INDEX"),
                 new JButton("BASE"),
                 new JButton("IS_LP"),
@@ -59,9 +60,13 @@ public class PlayersInspector extends JPanel {
     }
 
     public void update() {
+
+
+        //repopulate cells
         int currIndex = 0;
-        for (Player p : players) {
+        for (Player p : playerList.getPlayers()) {
             int col = 0;
+
             cells[currIndex][col++].setText(parse(p.index));
             cells[currIndex][col++].setText(parse(p.base != null ? p.base.toString().replace("native@", "") : ""));
             cells[currIndex][col++].setText(parse(parse(p.isLocalPlayer)));
@@ -95,6 +100,13 @@ public class PlayersInspector extends JPanel {
                         cells[currIndex][i].setForeground(Color.green);
 
             currIndex++;
+        }
+
+        //clear all remaining rows
+        for (int i = playerList.getPlayers().size(); i < 60; i++) {
+            for (int j = 0; j < headers.length; j++) {
+                cells[i][j].setText("");
+            }
         }
     }
 

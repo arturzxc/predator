@@ -35,8 +35,16 @@ public class Util {
     }
 
     public static byte[] intToBytes(int value) {
-        ByteBuffer buffer = ByteBuffer.allocate(4);
+        ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES);
         buffer.putInt(value);
+        byte[] buff = buffer.order(ByteOrder.LITTLE_ENDIAN).array();
+        reverseByteArray(buff);
+        return buff;
+    }
+
+    public static byte[] shortToBytes(short value) {
+        ByteBuffer buffer = ByteBuffer.allocate(Short.BYTES);
+        buffer.putShort(value);
         byte[] buff = buffer.order(ByteOrder.LITTLE_ENDIAN).array();
         reverseByteArray(buff);
         return buff;
@@ -90,4 +98,13 @@ public class Util {
         }
     }
 
+    public static double convertMetersToHammerUnits(double meters) {
+        final double METERS_TO_HAMMER_UNIT = 39.37007874;
+        return meters * METERS_TO_HAMMER_UNIT;
+    }
+
+    public static int convertHammerUnitsToMeters(double hammerUnits) {
+        final double HAMMER_UNIT_TO_METERS = 0.0254;
+        return (int) (hammerUnits * HAMMER_UNIT_TO_METERS);
+    }
 }

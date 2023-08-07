@@ -3,79 +3,55 @@ package predator;
 import predator.core.Level;
 import predator.core.LocalPlayer;
 import predator.core.Mem;
-import predator.core.Player;
-import predator.features.PlayersInspector;
-import predator.features.Radar;
+import predator.core.PlayerList;
 import predator.features.Sense;
 import predator.features.TriggerBot;
+import predator.ui.MainFrame;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
 
-public class Main extends JFrame {
+public class Main {
 
-    private final Level level;
-    private final PlayersInspector playersPnl;
-    private final Radar radarPnl;
+    public static Level LEVEL;
+    public static LocalPlayer LOCAL_PLAYER;
+    public static PlayerList PLAYER_LIST;
+    public static Sense SENSE;
+    public static TriggerBot TRIGGER_BOT;
+    public static MainFrame UI;
 
-    public Main(Level level, LocalPlayer localPlayer, List<Player> players) {
-        this.level = level;
-        playersPnl = new PlayersInspector(players);
-        JScrollPane playersScrollPnl = new JScrollPane();
-        playersScrollPnl.setViewportView(playersPnl);
-        radarPnl = new Radar(level, localPlayer, players);
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("PLAYERS", playersScrollPnl);
-        tabbedPane.addTab("RADAR", radarPnl);
-        setContentPane(tabbedPane);
-        setSize(500, 800);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
+    static void init() throws Exception {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        LEVEL = new Level();
+        LOCAL_PLAYER = new LocalPlayer();
+        PLAYER_LIST = new PlayerList(LOCAL_PLAYER);
+        SENSE = new Sense(PLAYER_LIST);
+        TRIGGER_BOT = new TriggerBot(LOCAL_PLAYER, PLAYER_LIST);
+        UI = new MainFrame(LEVEL, LOCAL_PLAYER, PLAYER_LIST, SENSE);
+        Mem.AwaitPID();
     }
-
-    public void update(int counter) {
-        setTitle("Counter: " + counter + " Map: " + level.name);
-        repaint();
-        radarPnl.repaint();
-        playersPnl.update();
-    }
-
 
     public static void main(String[] args) throws Exception {
-        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        Mem.findGamePID();
-
-        final Level level = new Level();
-        final LocalPlayer localPlayer = new LocalPlayer();
-        final List<Player> players = new ArrayList<>();
-        for (int i = 0; i < 60; i++) players.add(new Player(i, localPlayer));
-        final Sense sense = new Sense(players);
-        final TriggerBot triggerBot = new TriggerBot(localPlayer, players);
-        final Main ui = new Main(level, localPlayer, players);
-
-        int counter = 0;
-        while (true) {
+        init();
+        for (int counter = 0; counter < 1000; counter++) {
             try {
-                level.update();
-                if (level.playable) {
-                    localPlayer.update();
-                    players.forEach(Player::update);
-                    sense.update();
-                    triggerBot.update();
+                LEVEL.update();
+                if (LEVEL.playable) {
+                    LOCAL_PLAYER.update();
+                    PLAYER_LIST.update();
+                    SENSE.update();
+                    TRIGGER_BOT.update();
                 } else {
-                    localPlayer.resetFields();
-                    players.forEach(Player::resetFields);
+                    LOCAL_PLAYER.reset();
+                    PLAYER_LIST.reset();
                 }
+                UI.update(counter);
+                Thread.sleep(16);
             } catch (Exception ex) {
-                System.out.println("Something went wrong, waiting 10 seconds and retrying...");
                 ex.printStackTrace();
-                Thread.sleep(1000 * 10);
-                Mem.findGamePID();
+                UI.setTitle("Error. Retry in 10 seconds");
+                Mem.AwaitPID();
             }
-            ui.update(counter);
-            counter = (counter >= 1000) ? 0 : counter + 1;
-            Thread.sleep(16);
+            if (counter == 999) counter = 0;
         }
     }
 }

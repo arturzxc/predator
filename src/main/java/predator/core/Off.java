@@ -18,4 +18,7 @@ public class Off {
     public static final Pointer GLOW_THROUGH_WALL = new Pointer(0x03c0 + 0x10);         //
     public static final Pointer LAST_VISIBLE_TIME = new Pointer(0x1a6d + 0x3);          //[RecvTable.DT_BaseCombatCharacter]->m_hudInfo_visibilityTestAlwaysPasses + 0x3
     public static final Pointer NAME = new Pointer(0x0589);                             //[RecvTable.DT_BaseEntity]->m_iName
+
+    //[buttons]
+    public static final Pointer IN_ATTACK = new Pointer(0x0743e510);
 }

@@ -40,11 +40,11 @@ public class Player {
         long shiftValue = ((index + 1) * 32L);
         Pointer entityListPointerShifted = entityListPointer.share(shiftValue);
         base = Mem.resolvePointer(entityListPointerShifted);
-        if (base == null) resetFields();
+        if (base == null) reset();
         else loadFields();
     }
 
-    public void resetFields() {
+    public void reset() {
         //BaseEntity
         entityType = null;
         localOrigin = null;
@@ -68,29 +68,39 @@ public class Player {
     }
 
     public void loadFields() {
-        //BaseEntity
-        entityType = Mem.readString(base.share(Pointer.nativeValue(Off.NAME)), 32);
-        localOrigin = Mem.readFloatVector3D(base.share(Pointer.nativeValue(Off.LOCAL_ORIGIN)));
-        teamNumber = Mem.readInteger(base.share(Pointer.nativeValue(Off.TEAM_NUMBER)));
-        shieldHealthMax = Mem.readInteger(base.share(Pointer.nativeValue(Off.SHIELD_HEALTH_MAX)));
-        //Player
-        if (isPlayer()) {
-            dead = Mem.readShort(base.share(Pointer.nativeValue(Off.LIFE_STATE))) > 0;
-            knocked = Mem.readShort(base.share(Pointer.nativeValue(Off.BLEEDOUT_STATE))) > 0;
-            viewAngles = Mem.readFloatVector2D(base.share(Pointer.nativeValue(Off.VIEW_ANGLE)));
-            glowEnable = Mem.readInteger(base.share(Pointer.nativeValue(Off.GLOW_ENABLE)));
-            glowThroughWall = Mem.readInteger(base.share(Pointer.nativeValue(Off.GLOW_THROUGH_WALL)));
-            lastTimeVisible_previous = lastTimeVisible;
-            lastTimeVisible = Mem.readInteger(base.share(Pointer.nativeValue(Off.LAST_VISIBLE_TIME)));
-            visible = !Objects.equals(lastTimeVisible_previous, lastTimeVisible);
-        }
-        //calculated
-        if (localPlayer.base != null) {
-            isLocalPlayer = localPlayer.base.toString().equals(base.toString());
-            isFriendlyPlayer = Objects.equals(localPlayer.teamNumber, teamNumber);
-            distanceToLocalPlayer = localPlayer.localOrigin.distance(localOrigin);
-            desiredPitch = calculateDesiredPitch();
-            desiredYaw = calculateDesiredYaw();
+        try {
+            //BaseEntity
+            entityType = Mem.readString(base.share(Pointer.nativeValue(Off.NAME)), 32);
+            localOrigin = Mem.readFloatVector3D(base.share(Pointer.nativeValue(Off.LOCAL_ORIGIN)));
+            teamNumber = Mem.readInteger(base.share(Pointer.nativeValue(Off.TEAM_NUMBER)));
+            shieldHealthMax = Mem.readInteger(base.share(Pointer.nativeValue(Off.SHIELD_HEALTH_MAX)));
+            //Player
+            if (isPlayer()) {
+                dead = Mem.readShort(base.share(Pointer.nativeValue(Off.LIFE_STATE))) > 0;
+                knocked = Mem.readShort(base.share(Pointer.nativeValue(Off.BLEEDOUT_STATE))) > 0;
+                viewAngles = Mem.readFloatVector2D(base.share(Pointer.nativeValue(Off.VIEW_ANGLE)));
+                glowEnable = Mem.readInteger(base.share(Pointer.nativeValue(Off.GLOW_ENABLE)));
+                glowThroughWall = Mem.readInteger(base.share(Pointer.nativeValue(Off.GLOW_THROUGH_WALL)));
+                lastTimeVisible_previous = lastTimeVisible;
+                lastTimeVisible = Mem.readInteger(base.share(Pointer.nativeValue(Off.LAST_VISIBLE_TIME)));
+                visible = !Objects.equals(lastTimeVisible_previous, lastTimeVisible);
+            }
+            //calculated
+            if (localPlayer.base != null) {
+                isLocalPlayer = localPlayer.base.toString().equals(base.toString());
+                isFriendlyPlayer = Objects.equals(localPlayer.teamNumber, teamNumber);
+                if (visible && !isLocalPlayer && localPlayer.dead != null && !localPlayer.dead) {//heavy calculations. Only perform if absolutely necessary.
+                    distanceToLocalPlayer = localPlayer.localOrigin.distance(localOrigin);
+                    desiredPitch = calculateDesiredPitch();
+                    desiredYaw = calculateDesiredYaw();
+                } else {
+                    distanceToLocalPlayer = null;
+                    desiredPitch = null;
+                    desiredYaw = null;
+                }
+            }
+        } catch (Exception ex) {
+            reset();
         }
     }
 
