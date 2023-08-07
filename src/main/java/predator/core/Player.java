@@ -85,6 +85,12 @@ public class Player {
                 lastTimeVisible = Mem.readInteger(base.share(Pointer.nativeValue(Off.LAST_VISIBLE_TIME)));
                 visible = !Objects.equals(lastTimeVisible_previous, lastTimeVisible);
             }
+            //dummy
+            if (isDummy()) {
+                lastTimeVisible_previous = lastTimeVisible;
+                lastTimeVisible = Mem.readInteger(base.share(Pointer.nativeValue(Off.LAST_VISIBLE_TIME)));
+                visible = !Objects.equals(lastTimeVisible_previous, lastTimeVisible);
+            }
             //calculated
             if (localPlayer.base != null) {
                 isLocalPlayer = localPlayer.base.toString().equals(base.toString());
