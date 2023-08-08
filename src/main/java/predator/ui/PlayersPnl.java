@@ -18,6 +18,7 @@ public class PlayersPnl extends JPanel {
         Font monospacedFont = new Font(Font.MONOSPACED, Font.PLAIN, 11);
         headers = new JButton[]{
                 new JButton("INDEX"),
+                new JButton("AIMED_AT"),
                 new JButton("BASE"),
                 new JButton("IS_LP"),
                 new JButton("NAME"),
@@ -68,6 +69,7 @@ public class PlayersPnl extends JPanel {
             int col = 0;
 
             cells[currIndex][col++].setText(parse(p.index));
+            cells[currIndex][col++].setText(parse(p.aimedAt));
             cells[currIndex][col++].setText(parse(p.base != null ? p.base.toString().replace("native@", "") : ""));
             cells[currIndex][col++].setText(parse(parse(p.isLocalPlayer)));
             cells[currIndex][col++].setText(parse(parse(p.entityType)));

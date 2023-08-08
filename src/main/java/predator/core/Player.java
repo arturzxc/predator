@@ -22,6 +22,9 @@ public class Player {
     public Integer lastTimeVisible;
     public Integer lastTimeVisible_previous;
     public Boolean visible;
+    public Integer lastCrosshairsTime_previous;
+    public Integer lastCrosshairsTime;
+    public Boolean aimedAt;
     //calculated
     public Boolean isLocalPlayer;
     public Boolean isFriendlyPlayer;
@@ -59,6 +62,9 @@ public class Player {
         lastTimeVisible = null;
         lastTimeVisible_previous = null;
         visible = null;
+        lastCrosshairsTime_previous = null;
+        lastCrosshairsTime = null;
+        aimedAt = null;
         //calculated
         isLocalPlayer = null;
         isFriendlyPlayer = null;
@@ -84,6 +90,9 @@ public class Player {
                 lastTimeVisible_previous = lastTimeVisible;
                 lastTimeVisible = Mem.readInteger(base.share(Pointer.nativeValue(Off.LAST_VISIBLE_TIME)));
                 visible = !Objects.equals(lastTimeVisible_previous, lastTimeVisible);
+                lastCrosshairsTime_previous = lastCrosshairsTime;
+                lastCrosshairsTime = Mem.readInteger(base.share(Pointer.nativeValue(Off.LAST_CROSSHAIRS_TIME)));
+                aimedAt = !Objects.equals(lastCrosshairsTime_previous, lastCrosshairsTime);
             }
             //dummy
             if (isDummy()) {
@@ -96,9 +105,9 @@ public class Player {
                 isLocalPlayer = localPlayer.base.toString().equals(base.toString());
                 isFriendlyPlayer = Objects.equals(localPlayer.teamNumber, teamNumber);
                 if (visible && !isLocalPlayer && localPlayer.dead != null && !localPlayer.dead) {//heavy calculations. Only perform if absolutely necessary.
-                    distanceToLocalPlayer = localPlayer.localOrigin.distance(localOrigin);
-                    desiredPitch = calculateDesiredPitch();
-                    desiredYaw = calculateDesiredYaw();
+//                    distanceToLocalPlayer = localPlayer.localOrigin.distance(localOrigin);
+//                    desiredPitch = calculateDesiredPitch();
+//                    desiredYaw = calculateDesiredYaw();
                 } else {
                     distanceToLocalPlayer = null;
                     desiredPitch = null;
@@ -122,24 +131,8 @@ public class Player {
         glow(5);
     }
 
-    public void glowMadMaggie() {
-        glow(10);
-    }
-
     public void glowBloodhound() {
         glow(7);
-    }
-
-    public void glowBrightAssYellow() {
-        glow(11);
-    }
-
-    public void glowBrightAssGreen() {
-        glow(12);
-    }
-
-    public void glowRedOutline() {
-        glow(14);
     }
 
     public boolean isPlayer() {

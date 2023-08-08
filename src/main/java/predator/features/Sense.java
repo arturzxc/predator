@@ -15,7 +15,7 @@ public class Sense {
 
     public void update() {
         playerList.getVisibleEnemies().forEach(Player::glowCaustic);
-        playerList.getInVisibleEnemies().forEach(Player::glowMadMaggie);
+        playerList.getInVisibleEnemies().forEach(Player::glowBloodhound);
     }
 
     public int getMaxDistanceInMeters() {

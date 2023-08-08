@@ -45,7 +45,7 @@ public class Main {
                     PLAYER_LIST.reset();
                 }
                 UI.update(counter);
-                Thread.sleep(16);
+                Thread.sleep(10);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 UI.setTitle("Error. Retry in 10 seconds");
