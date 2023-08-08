@@ -39,7 +39,7 @@ public class TriggerBot implements NativeKeyListener {
     }
 
     public void update() {
-        if (!triggerDown) return;
+//        if (!triggerDown) return;
         if (localPlayer.base == null) return;
         if (localPlayer.dead) return;
         if (!localPlayer.inZoom) return;
