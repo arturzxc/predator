@@ -84,7 +84,6 @@ public class Mem {
 
     public static Short readShortTest(Pointer pointer) {
         byte[] memoryData = Mem.readMemory(pid, Pointer.nativeValue(pointer), Short.BYTES);
-        System.out.println("[" + memoryData[0] + " " + memoryData[1] + "]");
         if (memoryData.length == 0) throw new RuntimeException(" Empty memoryData");
         return ByteBuffer.wrap(memoryData).getShort();
     }
@@ -92,7 +91,6 @@ public class Mem {
     public static void writeShort(Pointer pointer, Short num) {
         if (num == null) throw new RuntimeException("Invalid num");
         byte[] memoryData = Util.shortToBytes(num);
-        System.out.println();
         writeMemory(pid, Pointer.nativeValue(pointer), memoryData);
     }
 

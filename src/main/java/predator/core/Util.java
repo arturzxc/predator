@@ -46,9 +46,7 @@ public class Util {
     public static byte[] shortToBytes(short value) {
         ByteBuffer buffer = ByteBuffer.allocate(Short.BYTES);
         buffer.putShort(value);
-        byte[] buff = buffer.order(ByteOrder.LITTLE_ENDIAN).array();
-//        reverseByteArray(buff);
-        return buff;
+        return buffer.order(ByteOrder.LITTLE_ENDIAN).array();
     }
 
     public static void reverseByteArray(byte[] arr) {
