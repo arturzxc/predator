@@ -40,6 +40,7 @@ public class TriggerBot implements NativeKeyListener {
         if (level.isTrainingArea)
             targetAcquired = !dummyList.getDummies().stream()
                     .filter(p -> p.visible != null && p.visible)
+                    .filter(p -> p.knocked != null && !p.knocked)
                     .filter(p -> p.aimedAt != null && p.aimedAt)
                     .toList().isEmpty();
         else

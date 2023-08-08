@@ -15,19 +15,17 @@ public class Mem {
     public static int pid;
 
     public static void AwaitPID() {
-        while (true) {
+        try {
+            String targetProcessId = Util.executeCommand("pidof -s R5Apex.exe");
+            System.out.println("Game found! PID: " + targetProcessId);
+            pid = Integer.parseInt(targetProcessId.replace("\n", ""));
+        } catch (Exception ex) {
+            System.out.println("Waiting for you to open the game");
             try {
-                String targetProcessId = Util.executeCommand("pidof -s R5Apex.exe");
-                System.out.println("Game found! PID: " + targetProcessId);
-                pid = Integer.parseInt(targetProcessId.replace("\n", ""));
-                break;
-            } catch (Exception ex) {
-                System.out.println("Waiting for you to open the game");
-                try {
-                    Thread.sleep(1000 * 10);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                Thread.sleep(1000 * 10);
+                AwaitPID();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
     }
