@@ -20,62 +20,26 @@ public class PlayerList {
         PLAYERS.forEach(Player::reset);
     }
 
-    public Player getLocalPlayer() {
-        return PLAYERS.stream()
-                .filter(e -> e.base != null)
-                .filter(e -> e.isLocalPlayer != null && e.isLocalPlayer)
-                .findFirst()
-                .orElseThrow();
-    }
-
     public List<Player> getPlayers() {
         return PLAYERS.stream()
                 .filter(e -> e.base != null)
+                .filter(e -> e.entityType != null && e.entityType.equals("player"))
                 .collect(Collectors.toList());
     }
 
-    public List<Player> getAlivePlayers() {
+    public List<Player> getEnemyPlayers() {
         return PLAYERS.stream()
                 .filter(e -> e.base != null)
-                .filter(e -> e.dead != null && !e.dead)
-                .collect(Collectors.toList());
-    }
-
-    public List<Player> getEnemies() {
-        return PLAYERS.stream()
-                .filter(e -> e.base != null)
+                .filter(e -> e.entityType != null && e.entityType.equals("player"))
                 .filter(p -> p.isFriendlyPlayer != null && !p.isFriendlyPlayer)
                 .collect(Collectors.toList());
     }
 
-    public List<Player> getVisibleEnemies() {
-        return PLAYERS.stream()
-                .filter(e -> e.base != null)
-                .filter(p -> p.visible != null && p.visible)
-                .filter(p -> p.isFriendlyPlayer != null && !p.isFriendlyPlayer)
-                .collect(Collectors.toList());
-    }
 
-    public List<Player> getInVisibleEnemies() {
+    public List<Player> getFriendlyPlayers() {
         return PLAYERS.stream()
                 .filter(e -> e.base != null)
-                .filter(p -> p.visible != null && !p.visible)
-                .filter(p -> p.isFriendlyPlayer != null && !p.isFriendlyPlayer)
-                .collect(Collectors.toList());
-    }
-
-    public List<Player> getVisibleHealthyEnemies() {
-        return PLAYERS.stream()
-                .filter(e -> e.base != null)
-                .filter(p -> p.visible != null && p.visible)
-                .filter(p -> p.knocked != null && !p.knocked)
-                .filter(p -> p.isFriendlyPlayer != null && !p.isFriendlyPlayer)
-                .collect(Collectors.toList());
-    }
-
-    public List<Player> getFriendlies() {
-        return PLAYERS.stream()
-                .filter(e -> e.base != null)
+                .filter(e -> e.entityType != null && e.entityType.equals("player"))
                 .filter(p -> p.isFriendlyPlayer != null && p.isFriendlyPlayer)
                 .collect(Collectors.toList());
     }

@@ -28,8 +28,8 @@ public class RadarPnl extends JPanel {
     }
 
     private void filterPlayers() {
-        myFriendlyEntities = playerList.getFriendlies();
-        myEnemyEntities = playerList.getEnemies();
+        myFriendlyEntities = playerList.getFriendlyPlayers();
+        myEnemyEntities = playerList.getEnemyPlayers();
     }
 
     @Override

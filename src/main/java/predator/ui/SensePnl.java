@@ -1,5 +1,6 @@
 package predator.ui;
 
+import predator.core.Util;
 import predator.features.Sense;
 
 import javax.swing.*;
@@ -8,15 +9,15 @@ public class SensePnl extends JPanel {
 
     public SensePnl(Sense sense) {
         JSlider slider = new JSlider();
-        slider.setMinimum(50);
-        slider.setMaximum(500);
-        slider.setValue(sense.getMaxDistanceInMeters());
+        slider.setMinimum(0);
+        slider.setMaximum(300);
+        slider.setValue((int) Util.convertHammerUnitsToMeters(sense.maxDistance));
         slider.addChangeListener(e -> {
             JSlider sourceSlider = (JSlider) e.getSource();
             int newValue = sourceSlider.getValue();
-            sense.setMaxDistanceInMeters(newValue);
+            sense.maxDistance = Util.convertMetersToHammerUnits(newValue);
         });
-        add(new JLabel("Max Distance Visible (meters)"));
+        add(new JLabel("Max distance in meters"));
         add(slider);
     }
 

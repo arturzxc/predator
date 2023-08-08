@@ -7,6 +7,7 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+@SuppressWarnings("unused")
 public class Util {
 
     public static String executeCommand(String command) throws IOException, InterruptedException {
@@ -103,8 +104,8 @@ public class Util {
         return meters * METERS_TO_HAMMER_UNIT;
     }
 
-    public static int convertHammerUnitsToMeters(double hammerUnits) {
+    public static double convertHammerUnitsToMeters(double hammerUnits) {
         final double HAMMER_UNIT_TO_METERS = 0.0254;
-        return (int) (hammerUnits * HAMMER_UNIT_TO_METERS);
+        return hammerUnits * HAMMER_UNIT_TO_METERS;
     }
 }
