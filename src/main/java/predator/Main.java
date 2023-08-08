@@ -39,8 +39,8 @@ public class Main {
                     playerList.update();
                     if (level.isTrainingArea)
                         dummyList.update();
-                    sense.update();
-                    triggerBot.update();
+//                    sense.update();
+//                    triggerBot.update();
                 } else {
                     localPlayer.reset();
                     playerList.reset();
