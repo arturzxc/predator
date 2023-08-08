@@ -47,7 +47,7 @@ public class Util {
         ByteBuffer buffer = ByteBuffer.allocate(Short.BYTES);
         buffer.putShort(value);
         byte[] buff = buffer.order(ByteOrder.LITTLE_ENDIAN).array();
-        reverseByteArray(buff);
+//        reverseByteArray(buff);
         return buff;
     }
 

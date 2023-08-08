@@ -39,4 +39,17 @@ public class LocalPlayer {
             reset();
         }
     }
+
+    public void startAttack() {
+        Short s = 27648;
+        Mem.writeShort(Off.REGION.share(Pointer.nativeValue(Off.IN_ATTACK)), s);
+        System.out.println("ATTACKING");
+    }
+
+
+    public void stopAttack() {
+        Short s = 0;
+        Mem.writeShort(Off.REGION.share(Pointer.nativeValue(Off.IN_ATTACK)), s);
+        System.out.println("STOPPING");
+    }
 }

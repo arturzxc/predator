@@ -99,6 +99,9 @@ public class Player {
                 lastTimeVisible_previous = lastTimeVisible;
                 lastTimeVisible = Mem.readInteger(base.share(Pointer.nativeValue(Off.LAST_VISIBLE_TIME)));
                 visible = !Objects.equals(lastTimeVisible_previous, lastTimeVisible);
+                lastCrosshairsTime_previous = lastCrosshairsTime;
+                lastCrosshairsTime = Mem.readInteger(base.share(Pointer.nativeValue(Off.LAST_CROSSHAIRS_TIME)));
+                aimedAt = !Objects.equals(lastCrosshairsTime_previous, lastCrosshairsTime);
             }
             //calculated
             if (localPlayer.base != null) {
@@ -120,7 +123,6 @@ public class Player {
     }
 
     private void glow(int myGlowEnable) {
-        if (base == null || dead == null || dead || glowEnable == null || glowThroughWall == null) return;
         if (glowEnable != myGlowEnable)
             Mem.writeInteger(base.share(Pointer.nativeValue(Off.GLOW_ENABLE)), myGlowEnable);
         if (glowEnable != 2)

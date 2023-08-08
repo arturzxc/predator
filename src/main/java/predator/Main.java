@@ -1,9 +1,6 @@
 package predator;
 
-import predator.core.Level;
-import predator.core.LocalPlayer;
-import predator.core.Mem;
-import predator.core.PlayerList;
+import predator.core.*;
 import predator.features.Sense;
 import predator.features.TriggerBot;
 import predator.ui.MainFrame;
@@ -12,21 +9,23 @@ import javax.swing.*;
 
 public class Main {
 
-    public static Level LEVEL;
-    public static LocalPlayer LOCAL_PLAYER;
-    public static PlayerList PLAYER_LIST;
-    public static Sense SENSE;
-    public static TriggerBot TRIGGER_BOT;
-    public static MainFrame UI;
+    public static Level level;
+    public static LocalPlayer localPlayer;
+    public static PlayerList playerList;
+    public static DummyList dummyList;
+    public static Sense sense;
+    public static TriggerBot triggerBot;
+    public static MainFrame ui;
 
     static void init() throws Exception {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        LEVEL = new Level();
-        LOCAL_PLAYER = new LocalPlayer();
-        PLAYER_LIST = new PlayerList(LOCAL_PLAYER);
-        SENSE = new Sense(PLAYER_LIST);
-        TRIGGER_BOT = new TriggerBot(LOCAL_PLAYER, PLAYER_LIST);
-        UI = new MainFrame(LEVEL, LOCAL_PLAYER, PLAYER_LIST, SENSE);
+        level = new Level();
+        localPlayer = new LocalPlayer();
+        playerList = new PlayerList(localPlayer);
+        dummyList = new DummyList(localPlayer);
+        sense = new Sense(playerList);
+        triggerBot = new TriggerBot(level, localPlayer, playerList, dummyList);
+        ui = new MainFrame(level, localPlayer, playerList, sense);
         Mem.AwaitPID();
     }
 
@@ -34,21 +33,24 @@ public class Main {
         init();
         for (int counter = 0; counter < 1000; counter++) {
             try {
-                LEVEL.update();
-                if (LEVEL.playable) {
-                    LOCAL_PLAYER.update();
-                    PLAYER_LIST.update();
-                    SENSE.update();
-                    TRIGGER_BOT.update();
+                level.update();
+                if (level.playable) {
+                    localPlayer.update();
+                    playerList.update();
+                    if (level.isTrainingArea)
+                        dummyList.update();
+                    sense.update();
+                    triggerBot.update();
                 } else {
-                    LOCAL_PLAYER.reset();
-                    PLAYER_LIST.reset();
+                    localPlayer.reset();
+                    playerList.reset();
+                    dummyList.reset();
                 }
-                UI.update(counter);
+                ui.update(counter);
                 Thread.sleep(10);
             } catch (Exception ex) {
                 ex.printStackTrace();
-                UI.setTitle("Error. Retry in 10 seconds");
+                ui.setTitle("Error. Retry in 10 seconds");
                 Mem.AwaitPID();
             }
             if (counter == 999) counter = 0;
