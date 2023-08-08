@@ -36,6 +36,7 @@ public class LocalPlayer {
             inZoom = Mem.readShort(base.share(Pointer.nativeValue(Off.ZOOMING))) != 0;
             inAttack = Mem.readShort(Off.REGION.share(Pointer.nativeValue(Off.IN_ATTACK))) > 0;
         } catch (Exception ex) {
+            System.out.println("LocalPlayer failed to load all fields: " + ex.getMessage());
             reset();
         }
     }

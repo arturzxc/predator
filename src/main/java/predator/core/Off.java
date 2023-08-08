@@ -10,7 +10,7 @@ public class Off {
     //------------------------------------------------------------------------------------------------------------------
     public static final Pointer LEVEL_NAME = new Pointer(0x16eed90);                                                    //[Miscellaneous]->LevelName
     public static final Pointer ENTITY_LIST = new Pointer(0x1e743a8);                                                   //[Miscellaneous]->cl_entitylist
-    public static final Pointer LOCAL_PLAYER = new Pointer(0x02224440 + 0xA8);                                          //[ConVars]->player_overheat_time_to_overheat + 0xA8
+    public static final Pointer LOCAL_PLAYER = new Pointer(0x2224528);                                                  //[ConVars]->player_overheat_time_to_overheat + 0xA8
 
     //[RecvTable.DT_BaseEntity]
     //------------------------------------------------------------------------------------------------------------------

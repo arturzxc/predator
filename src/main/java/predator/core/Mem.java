@@ -16,7 +16,7 @@ public class Mem {
 
     public static void AwaitPID() {
         try {
-            String targetProcessId = Util.executeCommand("pidof -s R5Apex.exe");
+            String targetProcessId = Util.executeCommand("pidof -s r5apex.exe");
             System.out.println("Game found! PID: " + targetProcessId);
             pid = Integer.parseInt(targetProcessId.replace("\n", ""));
         } catch (Exception ex) {

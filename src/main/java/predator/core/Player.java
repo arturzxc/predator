@@ -118,6 +118,7 @@ public class Player {
                 }
             }
         } catch (Exception ex) {
+            System.out.println("Player[" + index + "] failed to load all fields: " + ex.getMessage());
             reset();
         }
     }
