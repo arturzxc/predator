@@ -24,13 +24,11 @@ public class Off {
     public static final Pointer ZOOMING = new Pointer(0x1c81);                                                          //[RecvTable.DT_Player]->m_bZooming
     public static final Pointer LIFE_STATE = new Pointer(0x07d0);                                                       //[RecvTable.DT_Player]->m_lifeState
     public static final Pointer BLEEDOUT_STATE = new Pointer(0x2790);                                                   //[RecvTable.DT_Player]->m_bleedoutState
-    public static final Pointer AMMO_POOL_CAPACITY = new Pointer(0x25e4);                                               //[RecvTable.DT_Player]->m_ammoPoolCapacity
-    public static final Pointer VIEW_ANGLE = AMMO_POOL_CAPACITY.share(-0x14);                                     //AMMO_POOL_CAPACITY - 0x14
+    public static final Pointer VIEW_ANGLE = new Pointer(0x25e4 - 0x14);                                                //[RecvTable.DT_Player]->m_ammoPoolCapacity - 0x14
 
     //[RecvTable.DT_BaseCombatCharacter]
     //------------------------------------------------------------------------------------------------------------------
-    public static final Pointer HUD_INFO_VISIBILITY_TEST_ALWAYS_PASSES = new Pointer(0x1a9d);                           //[RecvTable.DT_BaseCombatCharacter]->m_hudInfo_visibilityTestAlwaysPasses
-    public static final Pointer LAST_VISIBLE_TIME = HUD_INFO_VISIBILITY_TEST_ALWAYS_PASSES.share(0x3);          //HUD_INFO_VISIBILITY_TEST_ALWAYS_PASSES + 0x3
+    public static final Pointer LAST_VISIBLE_TIME = new Pointer(0x1aa0);                                               //[RecvTable.DT_BaseCombatCharacter]->m_hudInfo_visibilityTestAlwaysPasses + 0x3
     public static final Pointer LAST_CROSSHAIRS_TIME = LAST_VISIBLE_TIME.share(0x8);                              //LAST_VISIBLE_TIME + 0x8
 
     //[RecvTable.DT_HighlightSettings]

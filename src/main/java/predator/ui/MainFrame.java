@@ -1,5 +1,6 @@
 package predator.ui;
 
+import predator.core.DummyList;
 import predator.core.Level;
 import predator.core.LocalPlayer;
 import predator.core.PlayerList;
@@ -11,19 +12,27 @@ public class MainFrame extends JFrame {
 
     private final Level level;
     private final PlayersPnl playersPnl;
+    private final DummiesPnl dummiesPnl;
     private final RadarPnl radarPnl;
     private final SensePnl sensePnl;
 
-    public MainFrame(Level level, LocalPlayer localPlayer, PlayerList playerList, Sense sense) {
+    public MainFrame(Level level, LocalPlayer localPlayer, PlayerList playerList, DummyList dummyList, Sense sense) {
         this.level = level;
+
         playersPnl = new PlayersPnl(playerList);
         JScrollPane playersScrollPnl = new JScrollPane();
         playersScrollPnl.setViewportView(playersPnl);
-        radarPnl = new RadarPnl(level, localPlayer, playerList);
+
+        dummiesPnl = new DummiesPnl(dummyList);
+        JScrollPane dummiesScrollPnl = new JScrollPane();
+        dummiesScrollPnl.setViewportView(dummiesPnl);
+
+        radarPnl = new RadarPnl(level, localPlayer, playerList, dummyList);
         JTabbedPane tabbedPane = new JTabbedPane();
         sensePnl = new SensePnl(sense);
 
         tabbedPane.addTab("PLAYERS", playersScrollPnl);
+        tabbedPane.addTab("DUMMIES", dummiesScrollPnl);
         tabbedPane.addTab("RADAR", radarPnl);
         tabbedPane.addTab("SENSE", sensePnl);
 
@@ -39,6 +48,7 @@ public class MainFrame extends JFrame {
         repaint();
         radarPnl.repaint();
         playersPnl.update();
+        dummiesPnl.update();
     }
 
     public void update(int counter) {

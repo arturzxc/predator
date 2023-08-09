@@ -16,8 +16,6 @@ public class TriggerBot implements NativeKeyListener {
     private final PlayerList playerList;
     private final DummyList dummyList;
     private final Robot robot;
-    private Long timeLastShot;
-    private boolean isShooting;
 
     public TriggerBot(Level level, LocalPlayer localPlayer, PlayerList playerList, DummyList dummyList) {
         this.level = level;
@@ -40,12 +38,12 @@ public class TriggerBot implements NativeKeyListener {
         if (level.isTrainingArea)
             targetAcquired = !dummyList.getDummies().stream()
                     .filter(p -> p.visible != null && p.visible)
-                    .filter(p -> p.knocked != null && !p.knocked)
                     .filter(p -> p.aimedAt != null && p.aimedAt)
                     .toList().isEmpty();
         else
             targetAcquired = !playerList.getEnemyPlayers().stream()
                     .filter(p -> p.visible != null && p.visible)
+                    .filter(p -> p.knocked != null && !p.knocked)
                     .filter(p -> p.aimedAt != null && p.aimedAt)
                     .toList().isEmpty();
 
@@ -57,7 +55,7 @@ public class TriggerBot implements NativeKeyListener {
         robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
         robot.delay(1);
         robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-        robot.delay(1);
+        robot.delay(5);
         robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
         robot.delay(1);
     }

@@ -23,9 +23,9 @@ public class Main {
         localPlayer = new LocalPlayer();
         playerList = new PlayerList(localPlayer);
         dummyList = new DummyList(localPlayer);
-        sense = new Sense(playerList);
+        sense = new Sense(playerList, dummyList);
         triggerBot = new TriggerBot(level, localPlayer, playerList, dummyList);
-        ui = new MainFrame(level, localPlayer, playerList, sense);
+        ui = new MainFrame(level, localPlayer, playerList, dummyList, sense);
         Mem.AwaitPID();
     }
 
@@ -39,8 +39,8 @@ public class Main {
                     playerList.update();
                     if (level.isTrainingArea)
                         dummyList.update();
-//                    sense.update();
-//                    triggerBot.update();
+                    sense.update();
+                    triggerBot.update();
                 } else {
                     localPlayer.reset();
                     playerList.reset();

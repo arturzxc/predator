@@ -5,8 +5,10 @@ import predator.core.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.HashMap;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
+import java.util.Random;
 
 public class RadarPnl extends JPanel {
 
@@ -15,14 +17,16 @@ public class RadarPnl extends JPanel {
     private final Level level;
     private final LocalPlayer localPlayer;
     private final PlayerList playerList;
+    private final DummyList dummyList;
     private List<Player> myFriendlyEntities;
     private List<Player> myEnemyEntities;
     private final Map<Integer, Color> myColorMap;
 
-    public RadarPnl(Level level, LocalPlayer localPlayer, PlayerList playerList) {
+    public RadarPnl(Level level, LocalPlayer localPlayer, PlayerList playerList, DummyList dummyList) {
         this.level = level;
         this.localPlayer = localPlayer;
         this.playerList = playerList;
+        this.dummyList = dummyList;
         this.myColorMap = getRandomColors();
         setBackground(Color.black);
     }
@@ -30,6 +34,7 @@ public class RadarPnl extends JPanel {
     private void filterPlayers() {
         myFriendlyEntities = playerList.getFriendlyPlayers();
         myEnemyEntities = playerList.getEnemyPlayers();
+        myEnemyEntities.addAll(dummyList.getDummies());
     }
 
     @Override
@@ -83,13 +88,12 @@ public class RadarPnl extends JPanel {
     }
 
     void drawMapBackground(Graphics2D g2) {
-        g2.setColor(Color.green);
+        g2.setColor(new Color(81, 192, 2, 187));
         g2.fillRect((int) (getWidthHalf() - 10), 0, 20, 20);
         g2.fillRect((int) (getWidthHalf() - 10), getHeight() - 20, 20, 20);
         g2.setColor(Color.black);
-        g2.drawString("N", getWidthHalf() - 6, 14);
-        g2.setColor(Color.black);
-        g2.drawString("S", getWidthHalf() - 6, getHeight() - 6);
+        g2.drawString("N", getWidthHalf() - 5, 14);
+        g2.drawString("S", getWidthHalf() - 3, getHeight() - 6);
     }
 
     void drawMapName(Graphics2D g2) {
@@ -184,7 +188,7 @@ public class RadarPnl extends JPanel {
     private Map<Integer, Color> getRandomColors() {
         Map<Integer, Color> map = new HashMap<>();
         Random random = new Random();
-        for (int i = 0; i < 30; i++)
+        for (int i = 0; i < 100; i++)
             map.put(i, new Color(255, random.nextInt(200), random.nextInt(30)));
         return map;
     }

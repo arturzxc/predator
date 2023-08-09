@@ -1,19 +1,19 @@
 package predator.ui;
 
+import predator.core.DummyList;
 import predator.core.Player;
-import predator.core.PlayerList;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class PlayersPnl extends JPanel {
-    private final PlayerList playerList;
+public class DummiesPnl extends JPanel {
+    private final DummyList dummyList;
     private final JLabel[][] cells;
     private final JButton[] headers;
     private final int TOTAL_ROWS = 60;
 
-    public PlayersPnl(PlayerList playerList) {
-        this.playerList = playerList;
+    public DummiesPnl(DummyList dummyList) {
+        this.dummyList = dummyList;
 
         //headers
         Font monospacedFont = new Font(Font.MONOSPACED, Font.PLAIN, 11);
@@ -21,10 +21,7 @@ public class PlayersPnl extends JPanel {
                 new JButton("INDEX"),
                 new JButton("AIMED_AT"),
                 new JButton("BASE"),
-                new JButton("IS_LP"),
                 new JButton("NAME"),
-                new JButton("DEAD"),
-                new JButton("KNOCKED"),
                 new JButton("ORIGIN_X"),
                 new JButton("ORIGIN_Y"),
                 new JButton("ORIGIN_Z"),
@@ -62,20 +59,15 @@ public class PlayersPnl extends JPanel {
     }
 
     public void update() {
-
-
         //repopulate cells
         int currIndex = 0;
-        for (Player p : playerList.getPlayers()) {
+        for (Player p : dummyList.getDummies()) {
             int col = 0;
 
             cells[currIndex][col++].setText(parse(p.index));
             cells[currIndex][col++].setText(parse(p.aimedAt));
             cells[currIndex][col++].setText(parse(p.base != null ? p.base.toString().replace("native@", "") : ""));
-            cells[currIndex][col++].setText(parse(parse(p.isLocalPlayer)));
             cells[currIndex][col++].setText(parse(parse(p.entityType)));
-            cells[currIndex][col++].setText(parse(p.dead));
-            cells[currIndex][col++].setText(parse(p.knocked));
             if (p.localOrigin != null) {
                 cells[currIndex][col++].setText(formatFloat(p.localOrigin.x));
                 cells[currIndex][col++].setText(formatFloat(p.localOrigin.y));
@@ -94,19 +86,11 @@ public class PlayersPnl extends JPanel {
             cells[currIndex][col++].setText(formatDouble(p.desiredPitch));
             cells[currIndex][col].setText(formatDouble(p.desiredYaw));
 
-            //color LocalPlayer row
-            for (int i = 0; i < cells[currIndex].length; i++)
-                cells[currIndex][i].setForeground(Color.white);
-            if (p.isLocalPlayer != null)
-                if (p.isLocalPlayer)
-                    for (int i = 0; i < cells[currIndex].length; i++)
-                        cells[currIndex][i].setForeground(Color.green);
-
             currIndex++;
         }
 
         //clear all remaining rows
-        for (int i = playerList.getPlayers().size(); i < TOTAL_ROWS; i++) {
+        for (int i = dummyList.getDummies().size(); i < TOTAL_ROWS; i++) {
             for (int j = 0; j < headers.length; j++) {
                 cells[i][j].setText("");
             }

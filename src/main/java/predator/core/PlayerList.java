@@ -6,9 +6,10 @@ import java.util.stream.Collectors;
 
 public class PlayerList {
     private final List<Player> PLAYERS = new ArrayList<>();
+    public final int CAPACITY = 65;
 
     public PlayerList(LocalPlayer LOCAL_PLAYER) {
-        for (int i = 0; i < 60; i++)
+        for (int i = 0; i < CAPACITY; i++)
             PLAYERS.add(new Player(i, LOCAL_PLAYER));
     }
 

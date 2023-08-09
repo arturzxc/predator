@@ -6,9 +6,10 @@ import java.util.stream.Collectors;
 
 public class DummyList {
     private final List<Player> DUMMIES = new ArrayList<>();
+    public final int CAPACITY = 15000;
 
     public DummyList(LocalPlayer LOCAL_PLAYER) {
-        for (int i = 0; i < 15000; i++)
+        for (int i = 0; i < CAPACITY; i++)
             DUMMIES.add(new Player(i, LOCAL_PLAYER));
     }
 
@@ -23,7 +24,7 @@ public class DummyList {
     public List<Player> getDummies() {
         return DUMMIES.stream()
                 .filter(e -> e.base != null)
-                .filter(e -> e.entityType != null && e.entityType.equals("dynamic_dummie"))
+                .filter(e -> e.entityType != null && e.entityType.equalsIgnoreCase("dynamic_dummie"))
                 .collect(Collectors.toList());
     }
 }

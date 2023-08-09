@@ -84,37 +84,30 @@ public class Player {
             localOrigin = Mem.readFloatVector3D(base.share(Pointer.nativeValue(Off.LOCAL_ORIGIN)));
             teamNumber = Mem.readInteger(base.share(Pointer.nativeValue(Off.TEAM_NUMBER)));
             shieldHealthMax = Mem.readInteger(base.share(Pointer.nativeValue(Off.SHIELD_HEALTH_MAX)));
-            //Player
+            glowEnable = Mem.readInteger(base.share(Pointer.nativeValue(Off.GLOW_ENABLE)));
+            glowThroughWall = Mem.readInteger(base.share(Pointer.nativeValue(Off.GLOW_THROUGH_WALL)));
+            lastTimeVisible_previous = lastTimeVisible;
+            lastTimeVisible = Mem.readInteger(base.share(Pointer.nativeValue(Off.LAST_VISIBLE_TIME)));
+            visible = lastTimeVisible_previous != null && !Objects.equals(lastTimeVisible_previous, lastTimeVisible);
+            lastCrosshairsTime_previous = lastCrosshairsTime;
+            lastCrosshairsTime = Mem.readInteger(base.share(Pointer.nativeValue(Off.LAST_CROSSHAIRS_TIME)));
+            aimedAt = !Objects.equals(lastCrosshairsTime_previous, lastCrosshairsTime);
+
+            //Only Players have these
             if (isPlayer()) {
                 dead = Mem.readShort(base.share(Pointer.nativeValue(Off.LIFE_STATE))) > 0;
                 knocked = Mem.readShort(base.share(Pointer.nativeValue(Off.BLEEDOUT_STATE))) > 0;
                 viewAngles = Mem.readFloatVector2D(base.share(Pointer.nativeValue(Off.VIEW_ANGLE)));
-                glowEnable = Mem.readInteger(base.share(Pointer.nativeValue(Off.GLOW_ENABLE)));
-                glowThroughWall = Mem.readInteger(base.share(Pointer.nativeValue(Off.GLOW_THROUGH_WALL)));
-                lastTimeVisible_previous = lastTimeVisible;
-                lastTimeVisible = Mem.readInteger(base.share(Pointer.nativeValue(Off.LAST_VISIBLE_TIME)));
-                visible = !Objects.equals(lastTimeVisible_previous, lastTimeVisible);
-                lastCrosshairsTime_previous = lastCrosshairsTime;
-                lastCrosshairsTime = Mem.readInteger(base.share(Pointer.nativeValue(Off.LAST_CROSSHAIRS_TIME)));
-                aimedAt = !Objects.equals(lastCrosshairsTime_previous, lastCrosshairsTime);
             }
-            //dummy
-            if (isDummy()) {
-                lastTimeVisible_previous = lastTimeVisible;
-                lastTimeVisible = Mem.readInteger(base.share(Pointer.nativeValue(Off.LAST_VISIBLE_TIME)));
-                visible = !Objects.equals(lastTimeVisible_previous, lastTimeVisible);
-                lastCrosshairsTime_previous = lastCrosshairsTime;
-                lastCrosshairsTime = Mem.readInteger(base.share(Pointer.nativeValue(Off.LAST_CROSSHAIRS_TIME)));
-                aimedAt = !Objects.equals(lastCrosshairsTime_previous, lastCrosshairsTime);
-            }
+
             //calculated
             if (localPlayer.base != null) {
                 isLocalPlayer = localPlayer.base.toString().equals(base.toString());
                 isFriendlyPlayer = Objects.equals(localPlayer.teamNumber, teamNumber);
-                if (visible && !isLocalPlayer && localPlayer.dead != null && !localPlayer.dead) {//heavy calculations. Only perform if absolutely necessary.
-//                    distanceToLocalPlayer = localPlayer.localOrigin.distance(localOrigin);
-//                    desiredPitch = calculateDesiredPitch();
-//                    desiredYaw = calculateDesiredYaw();
+                if (visible) {
+                    distanceToLocalPlayer = localPlayer.localOrigin.distance(localOrigin);
+                    desiredPitch = calculateDesiredPitch();
+                    desiredYaw = calculateDesiredYaw();
                 } else {
                     distanceToLocalPlayer = null;
                     desiredPitch = null;
@@ -134,20 +127,20 @@ public class Player {
             Mem.writeInteger(base.share(Pointer.nativeValue(Off.GLOW_THROUGH_WALL)), 2);
     }
 
-    public void glowCaustic() {
-        glow(5);
+    public void glowVisible() {
+        glow(5);//Caustic
     }
 
-    public void glowBloodhound() {
-        glow(7);
+    public void glowInvisible() {
+        glow(10);//Mad Maggie
     }
 
     public boolean isPlayer() {
-        return entityType != null && entityType.equals("player");
+        return entityType != null && entityType.equalsIgnoreCase("player");
     }
 
     public boolean isDummy() {
-        return entityType != null && entityType.equals("dynamic_dummie");
+        return entityType != null && entityType.equalsIgnoreCase("dynamic_dummie");
     }
 
     protected double calculateDesiredYaw() {
