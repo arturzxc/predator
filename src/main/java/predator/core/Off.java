@@ -14,7 +14,7 @@ public class Off {
 
     //[RecvTable.DT_BaseEntity]
     //------------------------------------------------------------------------------------------------------------------
-    public static final Pointer LOCAL_ORIGIN = new Pointer(0x0054);                                                     //[RecvTable.DT_BaseEntity]->m_localOrigin
+    public static final Pointer LOCAL_ORIGIN = new Pointer(0x017c);                                                     //[RecvTable.DT_BaseEntity]->m_localOrigin
     public static final Pointer TEAM_NUMBER = new Pointer(0x0480);                                                      //[RecvTable.DT_BaseEntity]->m_iTeamNum
     public static final Pointer SHIELD_HEALTH_MAX = new Pointer(0x01a4);                                                //[RecvTable.DT_BaseEntity]->m_shieldHealthMax
     public static final Pointer NAME = new Pointer(0x05c1);                                                             //[RecvTable.DT_BaseEntity]->m_iName
@@ -30,7 +30,7 @@ public class Off {
     //[RecvTable.DT_BaseCombatCharacter]
     //------------------------------------------------------------------------------------------------------------------
     public static final Pointer HUD_INFO_VISIBILITY_TEST_ALWAYS_PASSES = new Pointer(0x1a9d);                           //[RecvTable.DT_BaseCombatCharacter]->m_hudInfo_visibilityTestAlwaysPasses
-    public static final Pointer LAST_VISIBLE_TIME = HUD_INFO_VISIBILITY_TEST_ALWAYS_PASSES.share(0x3);            //HUD_INFO_VISIBILITY_TEST_ALWAYS_PASSES + 0x3
+    public static final Pointer LAST_VISIBLE_TIME = HUD_INFO_VISIBILITY_TEST_ALWAYS_PASSES.share(0x3);          //HUD_INFO_VISIBILITY_TEST_ALWAYS_PASSES + 0x3
     public static final Pointer LAST_CROSSHAIRS_TIME = LAST_VISIBLE_TIME.share(0x8);                              //LAST_VISIBLE_TIME + 0x8
 
     //[RecvTable.DT_HighlightSettings]

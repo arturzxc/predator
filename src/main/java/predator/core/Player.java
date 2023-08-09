@@ -77,6 +77,10 @@ public class Player {
         try {
             //BaseEntity
             entityType = Mem.readString(base.share(Pointer.nativeValue(Off.NAME)), 32);
+            if (!isPlayer() && !isDummy()) {
+                reset();
+                return;
+            }
             localOrigin = Mem.readFloatVector3D(base.share(Pointer.nativeValue(Off.LOCAL_ORIGIN)));
             teamNumber = Mem.readInteger(base.share(Pointer.nativeValue(Off.TEAM_NUMBER)));
             shieldHealthMax = Mem.readInteger(base.share(Pointer.nativeValue(Off.SHIELD_HEALTH_MAX)));
