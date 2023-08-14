@@ -40,4 +40,10 @@ public class Off {
     //[Buttons]
     //------------------------------------------------------------------------------------------------------------------
     public static final Pointer IN_ATTACK = new Pointer(0x07472e98);                                                    //[Buttons]->in_attack
+
+
+    //[TEST]
+    public static final Pointer OFFSET_WEAPON = new Pointer(0x1a44);                                                    //[RecvTable.DT_Player]->m_latestPrimaryWeapons
+    public static final Pointer OFFSET_WEAPON_NAME_INDEX = new Pointer(0x1888);                                               //[RecvTable.DT_WeaponX].m_weaponNameIndex
+    public static final Pointer OFFSET_WEAPON_IS_SEMI = LAST_VISIBLE_TIME.share(0x018c);                          //(LAST_VISIBLE_TIME + 0x018c )
 }

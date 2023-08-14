@@ -43,9 +43,9 @@ public class MainFrame extends JFrame {
     }
 
     public void update(int counter, String msg) {
+        if (counter % 10 != 0) return;
         if (msg != null) setTitle(msg);
         else setTitle("Counter: " + counter + " Map: " + level.name);
-        repaint();
         radarPnl.repaint();
         playersPnl.update();
         dummiesPnl.update();

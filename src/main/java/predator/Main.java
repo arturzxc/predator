@@ -9,22 +9,25 @@ import javax.swing.*;
 
 public class Main {
 
-    public static Level level;
-    public static LocalPlayer localPlayer;
-    public static PlayerList playerList;
-    public static DummyList dummyList;
-    public static Sense sense;
-    public static TriggerBot triggerBot;
-    public static MainFrame ui;
+    private static Level level;
+    private static LocalPlayer localPlayer;
+    private static LocalPlayerWeapon localPlayerWeapon;
+    private static PlayerList playerList;
+    private static DummyList dummyList;
+    private static Sense sense;
+    private static TriggerBot triggerBot;
+    private static MainFrame ui;
 
-    static void init() throws Exception {
+
+    private static void init() throws Exception {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         level = new Level();
         localPlayer = new LocalPlayer();
+        localPlayerWeapon = new LocalPlayerWeapon(localPlayer);
         playerList = new PlayerList(localPlayer);
         dummyList = new DummyList(localPlayer);
         sense = new Sense(playerList, dummyList);
-        triggerBot = new TriggerBot(level, localPlayer, playerList, dummyList);
+        triggerBot = new TriggerBot(level, localPlayer, localPlayerWeapon, playerList, dummyList);
         ui = new MainFrame(level, localPlayer, playerList, dummyList, sense);
         Mem.AwaitPID();
     }
@@ -36,6 +39,7 @@ public class Main {
                 level.update();
                 if (level.playable) {
                     localPlayer.update();
+                    localPlayerWeapon.update();
                     playerList.update();
                     if (level.isTrainingArea)
                         dummyList.update();
@@ -43,6 +47,7 @@ public class Main {
                     triggerBot.update();
                 } else {
                     localPlayer.reset();
+                    localPlayerWeapon.reset();
                     playerList.reset();
                     dummyList.reset();
                 }

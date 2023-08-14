@@ -88,7 +88,7 @@ public class Player {
             glowThroughWall = Mem.readInteger(base.share(Pointer.nativeValue(Off.GLOW_THROUGH_WALL)));
             lastTimeVisible_previous = lastTimeVisible;
             lastTimeVisible = Mem.readInteger(base.share(Pointer.nativeValue(Off.LAST_VISIBLE_TIME)));
-            visible = lastTimeVisible_previous != null && !Objects.equals(lastTimeVisible_previous, lastTimeVisible);
+            visible = !Objects.equals(lastTimeVisible_previous, lastTimeVisible);
             lastCrosshairsTime_previous = lastCrosshairsTime;
             lastCrosshairsTime = Mem.readInteger(base.share(Pointer.nativeValue(Off.LAST_CROSSHAIRS_TIME)));
             aimedAt = !Objects.equals(lastCrosshairsTime_previous, lastCrosshairsTime);
@@ -104,12 +104,11 @@ public class Player {
             if (localPlayer.base != null) {
                 isLocalPlayer = localPlayer.base.toString().equals(base.toString());
                 isFriendlyPlayer = Objects.equals(localPlayer.teamNumber, teamNumber);
+                distanceToLocalPlayer = localPlayer.localOrigin.distance(localOrigin);
                 if (visible) {
-                    distanceToLocalPlayer = localPlayer.localOrigin.distance(localOrigin);
                     desiredPitch = calculateDesiredPitch();
                     desiredYaw = calculateDesiredYaw();
                 } else {
-                    distanceToLocalPlayer = null;
                     desiredPitch = null;
                     desiredYaw = null;
                 }
@@ -123,7 +122,7 @@ public class Player {
     private void glow(int myGlowEnable) {
         if (glowEnable != myGlowEnable)
             Mem.writeInteger(base.share(Pointer.nativeValue(Off.GLOW_ENABLE)), myGlowEnable);
-        if (glowEnable != 2)
+        if (glowThroughWall != 2)
             Mem.writeInteger(base.share(Pointer.nativeValue(Off.GLOW_THROUGH_WALL)), 2);
     }
 

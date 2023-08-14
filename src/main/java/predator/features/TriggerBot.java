@@ -1,10 +1,7 @@
 package predator.features;
 
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
-import predator.core.DummyList;
-import predator.core.Level;
-import predator.core.LocalPlayer;
-import predator.core.PlayerList;
+import predator.core.*;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -13,13 +10,16 @@ public class TriggerBot implements NativeKeyListener {
 
     private final Level level;
     private final LocalPlayer localPlayer;
+    private final LocalPlayerWeapon localPlayerWeapon;
     private final PlayerList playerList;
     private final DummyList dummyList;
     private final Robot robot;
+    public double hipfireRange = Util.convertMetersToHammerUnits(50);
 
-    public TriggerBot(Level level, LocalPlayer localPlayer, PlayerList playerList, DummyList dummyList) {
+    public TriggerBot(Level level, LocalPlayer localPlayer, LocalPlayerWeapon localPlayerWeapon, PlayerList playerList, DummyList dummyList) {
         this.level = level;
         this.localPlayer = localPlayer;
+        this.localPlayerWeapon = localPlayerWeapon;
         this.playerList = playerList;
         this.dummyList = dummyList;
         try {
@@ -32,7 +32,9 @@ public class TriggerBot implements NativeKeyListener {
     public void update() {
         if (localPlayer.base == null) return;
         if (localPlayer.dead == null || localPlayer.dead) return;
-        if (localPlayer.inZoom != null && !localPlayer.inZoom) return;
+        if (localPlayer.knocked == null || localPlayer.knocked) return;
+        if (localPlayer.inZoom == null || !localPlayer.inZoom) return;
+        if (localPlayerWeapon.semiAuto == null || !localPlayerWeapon.semiAuto) return;
 
         boolean targetAcquired;
         if (level.isTrainingArea)

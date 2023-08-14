@@ -2,19 +2,26 @@ package predator.core;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DummyList {
-    private final List<Player> DUMMIES = new ArrayList<>();
-    public final int CAPACITY = 15000;
 
-    public DummyList(LocalPlayer LOCAL_PLAYER) {
-        for (int i = 0; i < CAPACITY; i++)
-            DUMMIES.add(new Player(i, LOCAL_PLAYER));
+    private final LocalPlayer localPlayer;
+    private final List<Player> DUMMIES = new ArrayList<>();
+
+    public DummyList(LocalPlayer localPlayer) {
+        this.localPlayer = localPlayer;
     }
 
     public void update() {
+        //if all dummies are dead then re-acquire the newly spawned ones.
+        //We do it this way so that we don't look over 15k entities all the time
+        if (DUMMIES.isEmpty())
+            for (int i = 0; i < 15000; i++)
+                DUMMIES.add(new Player(i, localPlayer));
+
+        //update the values and get rid of baseless entities
         DUMMIES.forEach(Player::update);
+        DUMMIES.removeIf(e -> e.base == null || !"dynamic_dummie".equals(e.entityType));
     }
 
     public void reset() {
@@ -22,9 +29,7 @@ public class DummyList {
     }
 
     public List<Player> getDummies() {
-        return DUMMIES.stream()
-                .filter(e -> e.base != null)
-                .filter(e -> e.entityType != null && e.entityType.equalsIgnoreCase("dynamic_dummie"))
-                .collect(Collectors.toList());
+        return DUMMIES;
     }
+
 }
