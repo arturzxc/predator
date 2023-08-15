@@ -3,31 +3,23 @@ package predator.ui;
 import predator.core.Settings;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class SettingsPnl extends JPanel {
 
     public SettingsPnl(Settings ss) {
-        JPanel mainContainer = new JPanel();
-        mainContainer.setLayout(new GridLayout(0, 1));
-        JScrollPane playersScrollPnl = new JScrollPane();
-        playersScrollPnl.setViewportView(mainContainer);
-        add(playersScrollPnl);
+        JTabbedPane mainContainer = new JTabbedPane();
+        add(mainContainer);
 
         //Sense
         {
             // container
             String containerTitle = "Sense";
-            Border lineBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
-            Border titledBorder = BorderFactory.createTitledBorder(lineBorder, containerTitle);
-            Border emptyBorder = new EmptyBorder(10, 10, 10, 10);
-            Border compoundBorder = BorderFactory.createCompoundBorder(titledBorder, emptyBorder);
             JPanel container = new JPanel();
-            container.setBorder(compoundBorder);
+            container.setBorder(new EmptyBorder(20, 20, 20, 20));
             container.setLayout(new GridLayout(0, 2));
-            mainContainer.add(container);
+            mainContainer.addTab(containerTitle, container);
 
             //on/off
             {
@@ -104,7 +96,7 @@ public class SettingsPnl extends JPanel {
 
             //visible custom color red
             {
-                container.add(new JLabel("VISIBLE COLOR RED"));
+                container.add(new JLabel("VISIBLE CUSTOM COLOR RED"));
                 JSlider slider = new JSlider();
                 slider.setMinimum(0);
                 slider.setMaximum(100);
@@ -119,7 +111,7 @@ public class SettingsPnl extends JPanel {
 
             //visible custom color green
             {
-                container.add(new JLabel("VISIBLE COLOR GREEN"));
+                container.add(new JLabel("VISIBLE CUSTOM COLOR GREEN"));
                 JSlider slider = new JSlider();
                 slider.setMinimum(0);
                 slider.setMaximum(100);
@@ -134,7 +126,7 @@ public class SettingsPnl extends JPanel {
 
             //visible custom color blue
             {
-                container.add(new JLabel("VISIBLE COLOR BLUE"));
+                container.add(new JLabel("VISIBLE CUSTOM COLOR BLUE"));
                 JSlider slider = new JSlider();
                 slider.setMinimum(0);
                 slider.setMaximum(100);
@@ -150,7 +142,7 @@ public class SettingsPnl extends JPanel {
 
             //invisible custom color red
             {
-                container.add(new JLabel("INVISIBLE COLOR RED"));
+                container.add(new JLabel("INVISIBLE CUSTOM COLOR RED"));
                 JSlider slider = new JSlider();
                 slider.setMinimum(0);
                 slider.setMaximum(100);
@@ -165,7 +157,7 @@ public class SettingsPnl extends JPanel {
 
             //invisible custom color green
             {
-                container.add(new JLabel("INVISIBLE COLOR GREEN"));
+                container.add(new JLabel("INVISIBLE CUSTOM COLOR GREEN"));
                 JSlider slider = new JSlider();
                 slider.setMinimum(0);
                 slider.setMaximum(100);
@@ -180,7 +172,7 @@ public class SettingsPnl extends JPanel {
 
             //invisible custom color blue
             {
-                container.add(new JLabel("INVISIBLE COLOR BLUE"));
+                container.add(new JLabel("INVISIBLE CUSTOM COLOR BLUE"));
                 JSlider slider = new JSlider();
                 slider.setMinimum(0);
                 slider.setMaximum(100);
@@ -198,14 +190,10 @@ public class SettingsPnl extends JPanel {
         {
             // container
             String containerTitle = "TRIGGER BOT";
-            Border lineBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
-            Border titledBorder = BorderFactory.createTitledBorder(lineBorder, containerTitle);
-            Border emptyBorder = new EmptyBorder(10, 10, 10, 10);
-            Border compoundBorder = BorderFactory.createCompoundBorder(titledBorder, emptyBorder);
             JPanel container = new JPanel();
-            container.setBorder(compoundBorder);
+            container.setBorder(new EmptyBorder(20, 20, 20, 20));
             container.setLayout(new GridLayout(0, 2));
-            mainContainer.add(container);
+            mainContainer.addTab(containerTitle, container);
 
             //on/off
             container.add(new JLabel("ON/OFF"));
