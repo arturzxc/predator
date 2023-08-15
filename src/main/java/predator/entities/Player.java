@@ -34,9 +34,6 @@ public class Player {
     public Double desiredPitch;
     public Double desiredYaw;
 
-    public Float glowColorRed;
-
-
     public Player(Integer index, LocalPlayer localPlayer, Settings settings) {
         this.index = index;
         this.localPlayer = localPlayer;
@@ -61,7 +58,6 @@ public class Player {
         shieldHealthMax = Memory.readInteger(base.share(Pointer.nativeValue(Offsets.OFF_SHIELD_HEALTH_MAX)));
         glowEnable = Memory.readInteger(base.share(Pointer.nativeValue(Offsets.OFF_GLOW_ENABLE)));
         glowThroughWall = Memory.readInteger(base.share(Pointer.nativeValue(Offsets.OFF_GLOW_THROUGH_WALL)));
-        glowColorRed = Memory.readFloat(base.share(Pointer.nativeValue(Offsets.OFF_GLOW_COLOR_R)));
         lastTimeVisible_previous = lastTimeVisible;
         lastTimeVisible = Memory.readInteger(base.share(Pointer.nativeValue(Offsets.OFF_LAST_VISIBLE_TIME)));
         visible = !Objects.equals(lastTimeVisible_previous, lastTimeVisible);
