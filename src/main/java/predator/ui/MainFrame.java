@@ -1,10 +1,10 @@
 package predator.ui;
 
-import predator.core.DummyList;
-import predator.core.Level;
-import predator.core.LocalPlayer;
-import predator.core.PlayerList;
-import predator.features.Sense;
+import predator.core.Settings;
+import predator.entities.DummyList;
+import predator.entities.Level;
+import predator.entities.LocalPlayer;
+import predator.entities.PlayerList;
 
 import javax.swing.*;
 
@@ -14,9 +14,9 @@ public class MainFrame extends JFrame {
     private final PlayersPnl playersPnl;
     private final DummiesPnl dummiesPnl;
     private final RadarPnl radarPnl;
-    private final SensePnl sensePnl;
+    private final SettingsPnl settingsPnl;
 
-    public MainFrame(Level level, LocalPlayer localPlayer, PlayerList playerList, DummyList dummyList, Sense sense) {
+    public MainFrame(Level level, LocalPlayer localPlayer, PlayerList playerList, DummyList dummyList, Settings settings) {
         this.level = level;
 
         playersPnl = new PlayersPnl(playerList);
@@ -29,12 +29,12 @@ public class MainFrame extends JFrame {
 
         radarPnl = new RadarPnl(level, localPlayer, playerList, dummyList);
         JTabbedPane tabbedPane = new JTabbedPane();
-        sensePnl = new SensePnl(sense);
+        settingsPnl = new SettingsPnl(settings);
 
         tabbedPane.addTab("PLAYERS", playersScrollPnl);
         tabbedPane.addTab("DUMMIES", dummiesScrollPnl);
         tabbedPane.addTab("RADAR", radarPnl);
-        tabbedPane.addTab("SENSE", sensePnl);
+        tabbedPane.addTab("SETTINGS", settingsPnl);
 
         setContentPane(tabbedPane);
         setSize(500, 800);
@@ -43,7 +43,6 @@ public class MainFrame extends JFrame {
     }
 
     public void update(int counter, String msg) {
-        if (counter % 10 != 0) return;
         if (msg != null) setTitle(msg);
         else setTitle("Counter: " + counter + " Map: " + level.name);
         radarPnl.repaint();

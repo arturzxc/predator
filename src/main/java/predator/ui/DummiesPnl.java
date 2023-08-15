@@ -1,7 +1,7 @@
 package predator.ui;
 
-import predator.core.DummyList;
-import predator.core.Player;
+import predator.entities.DummyList;
+import predator.entities.Player;
 
 import javax.swing.*;
 import java.awt.*;

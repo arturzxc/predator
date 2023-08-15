@@ -1,7 +1,7 @@
 package predator.ui;
 
-import predator.core.Player;
-import predator.core.PlayerList;
+import predator.entities.Player;
+import predator.entities.PlayerList;
 
 import javax.swing.*;
 import java.awt.*;

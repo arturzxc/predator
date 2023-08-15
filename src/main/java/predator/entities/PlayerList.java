@@ -1,23 +1,24 @@
-package predator.core;
+package predator.entities;
+
+import predator.core.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PlayerList {
+
+    private final Settings settings;
     private final List<Player> PLAYERS = new ArrayList<>();
 
-    public PlayerList(LocalPlayer LOCAL_PLAYER) {
-        for (int i = 0; i < 65; i++)
-            PLAYERS.add(new Player(i, LOCAL_PLAYER));
+    public PlayerList(LocalPlayer LOCAL_PLAYER, Settings settings) {
+        this.settings = settings;
+        for (int i = 0; i < 100; i++)
+            PLAYERS.add(new Player(i, LOCAL_PLAYER, settings));
     }
 
     public void update() {
         PLAYERS.forEach(Player::update);
-    }
-
-    public void reset() {
-        PLAYERS.forEach(Player::reset);
     }
 
     public List<Player> getPlayers() {
