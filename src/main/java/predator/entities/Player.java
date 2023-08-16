@@ -139,11 +139,14 @@ public class Player {
     }
 
     private Double calculateDesiredPitch() {
+//        isDucking = true;
+        //NEED TO CHECK IF WE ARE DEALING WITH POSITIVE OR NEGATIVE Z COORDINATE SINCE IT FLIPS SHIT AROUND
         FloatVector3D localOriginClone = localOrigin.clone();
-        if (isDucking != null && isDucking && !localPlayer.isDucking)
-            localOriginClone.z -= 30;
-        if (isDucking != null && !isDucking && localPlayer.isDucking)
-            localOriginClone.z += 30;
+//        int DUCK_SHIFT_VALUE = 30;
+//        if (isDucking != null && isDucking && !localPlayer.isDucking)
+//            localOriginClone.z = (localOriginClone.z > 0) ? localOriginClone.z - DUCK_SHIFT_VALUE : localOriginClone.z + DUCK_SHIFT_VALUE;
+//        if (isDucking != null && !isDucking && localPlayer.isDucking)
+//            localOriginClone.z = (localOriginClone.z < 0) ? localOriginClone.z - DUCK_SHIFT_VALUE : localOriginClone.z + DUCK_SHIFT_VALUE;
         final double locationDeltaZ = localOriginClone.z - localPlayer.localOrigin.z;
         final double distanceBetweenPlayers = localOriginClone.distance(localPlayer.localOrigin);
         double pitchInRadians = Math.atan2(-locationDeltaZ, distanceBetweenPlayers);
