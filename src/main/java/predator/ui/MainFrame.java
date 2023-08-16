@@ -37,7 +37,7 @@ public class MainFrame extends JFrame {
         tabbedPane.addTab("SETTINGS", settingsPnl);
 
         setContentPane(tabbedPane);
-        setSize(500, 800);
+        setSize(700, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }

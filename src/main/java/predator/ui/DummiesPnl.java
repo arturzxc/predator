@@ -18,8 +18,13 @@ public class DummiesPnl extends JPanel {
         //headers
         Font monospacedFont = new Font(Font.MONOSPACED, Font.PLAIN, 11);
         headers = new JButton[]{
-                new JButton("INDEX"),
+                new JButton("DIS_CRSHRS"),
+                new JButton("IS_DUCKING"),
+                new JButton("DES_PITCH"),
+                new JButton("DES_YAW"),
                 new JButton("AIMED_AT"),
+                new JButton("VISIBLE"),
+                new JButton("INDEX"),
                 new JButton("BASE"),
                 new JButton("NAME"),
                 new JButton("ORIGIN_X"),
@@ -29,12 +34,10 @@ public class DummiesPnl extends JPanel {
                 new JButton("SHIELDS_MAX"),
                 new JButton("GLW_ENA"),
                 new JButton("GLW_T_WALL"),
-                new JButton("VISIBLE"),
                 new JButton("DSTNC_FROM_LP"),
                 new JButton("VI_ANG_PITCH"),
                 new JButton("VI_ANG_YAW"),
-                new JButton("DESIRED_PITCH"),
-                new JButton("DESIRED_YAW")
+
         };
         for (JButton header : headers) {
             header.setFont(monospacedFont);
@@ -63,29 +66,41 @@ public class DummiesPnl extends JPanel {
         int currIndex = 0;
         for (Player p : dummyList.getDummies()) {
             int col = 0;
-
-            cells[currIndex][col++].setText(parse(p.index));
+            cells[currIndex][col++].setText(formatDouble(p.distanceToLocalPlayerCrosshairs));
+            cells[currIndex][col++].setText(parse(p.isDucking));
+            if (p.desiredViewAngles != null) {
+                cells[currIndex][col++].setText(formatFloat(p.desiredViewAngles.x));
+                cells[currIndex][col++].setText(formatFloat(p.desiredViewAngles.y));
+            } else {
+                cells[currIndex][col++].setText("-");
+                cells[currIndex][col++].setText("-");
+            }
             cells[currIndex][col++].setText(parse(p.aimedAt));
+            cells[currIndex][col++].setText(parse(p.visible));
+            cells[currIndex][col++].setText(parse(p.index));
             cells[currIndex][col++].setText(parse(p.base != null ? p.base.toString().replace("native@", "") : ""));
             cells[currIndex][col++].setText(parse(parse(p.entityType)));
             if (p.localOrigin != null) {
                 cells[currIndex][col++].setText(formatFloat(p.localOrigin.x));
                 cells[currIndex][col++].setText(formatFloat(p.localOrigin.y));
                 cells[currIndex][col++].setText(formatFloat(p.localOrigin.z));
+            } else {
+                cells[currIndex][col++].setText("_");
+                cells[currIndex][col++].setText("-");
+                cells[currIndex][col++].setText("-");
             }
             cells[currIndex][col++].setText(parse(p.teamNumber));
             cells[currIndex][col++].setText(parse(p.shieldHealthMax));
             cells[currIndex][col++].setText(parse(p.glowEnable));
             cells[currIndex][col++].setText(parse(p.glowThroughWall));
-            cells[currIndex][col++].setText(parse(p.visible));
             cells[currIndex][col++].setText(formatDouble(p.distanceToLocalPlayer));
             if (p.viewAngles != null) {
                 cells[currIndex][col++].setText(parse(p.viewAngles.x));
                 cells[currIndex][col++].setText(parse(p.viewAngles.y));
+            } else {
+                cells[currIndex][col++].setText("-");
+                cells[currIndex][col++].setText("-");
             }
-            cells[currIndex][col++].setText(formatDouble(p.desiredPitch));
-            cells[currIndex][col].setText(formatDouble(p.desiredYaw));
-
             currIndex++;
         }
 

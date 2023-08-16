@@ -189,7 +189,7 @@ public class SettingsPnl extends JPanel {
         //TRIGGERBOT
         {
             // container
-            String containerTitle = "TRIGGER BOT";
+            String containerTitle = "TRIGGERBOT";
             JPanel container = new JPanel();
             container.setBorder(new EmptyBorder(20, 20, 20, 20));
             container.setLayout(new GridLayout(0, 2));
@@ -205,6 +205,16 @@ public class SettingsPnl extends JPanel {
                 ss.save(Settings.Key.TRIGGERBOT_ON, String.valueOf(isChecked));
             });
             container.add(onOff);
+        }
+
+        //AIMBOT
+        {
+            // container
+            String containerTitle = "AIMBOT";
+            JPanel container = new JPanel();
+            container.setBorder(new EmptyBorder(20, 20, 20, 20));
+            container.setLayout(new GridLayout(0, 2));
+            mainContainer.addTab(containerTitle, container);
         }
     }
 

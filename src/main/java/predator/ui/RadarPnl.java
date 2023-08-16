@@ -74,7 +74,7 @@ public class RadarPnl extends JPanel {
     private void rotateAroundLocalPLayer(Graphics2D g2) {
         if (localPlayer == null) return;
         if (localPlayer.base == null) return;
-        Vector2D diffFromCenter = getLocalPlayerCenterDiff();
+        FloatVector2D diffFromCenter = getLocalPlayerCenterDiff();
         if (diffFromCenter == null) return;
         double rotationRadians = Math.toRadians(localPlayer.viewAngles.y - 90);
         g2.rotate(rotationRadians, getWidthHalf(), getHeightHalf());
@@ -83,7 +83,7 @@ public class RadarPnl extends JPanel {
     private void translateToOnLocalPlayer(Graphics2D g2) {
         if (localPlayer == null) return;
         if (localPlayer.base == null) return;
-        Vector2D diffFromCenter = getLocalPlayerCenterDiff();
+        FloatVector2D diffFromCenter = getLocalPlayerCenterDiff();
         if (diffFromCenter == null) return;
         g2.translate(diffFromCenter.x, diffFromCenter.y);
     }
@@ -118,7 +118,7 @@ public class RadarPnl extends JPanel {
 
     private void drawFriendlyPlayers(Graphics2D g2) {
         for (Player player : myFriendlyEntities) {
-            Vector3D originScaledTranslated = scaleAndTranslate(player.localOrigin);
+            FloatVector3D originScaledTranslated = scaleAndTranslate(player.localOrigin);
             g2.setColor(Color.green);
             g2.fillOval((int) (originScaledTranslated.x - DOT_SIZE_HALF), (int) (originScaledTranslated.y - DOT_SIZE_HALF), DOT_SIZE, DOT_SIZE);
             g2.setColor(Color.black);
@@ -127,7 +127,7 @@ public class RadarPnl extends JPanel {
 
     private void drawEnemyPlayers(Graphics2D g2) {
         for (Player player : myEnemyEntities) {
-            Vector3D originScaledTranslated = scaleAndTranslate(player.localOrigin);
+            FloatVector3D originScaledTranslated = scaleAndTranslate(player.localOrigin);
             g2.setColor(myColorMap.get(player.teamNumber));
             //draw enemy
             g2.fillOval((int) (originScaledTranslated.x - DOT_SIZE_HALF), (int) (originScaledTranslated.y - DOT_SIZE_HALF), DOT_SIZE, DOT_SIZE);
@@ -146,7 +146,7 @@ public class RadarPnl extends JPanel {
         }
     }
 
-    private Vector3D scaleAndTranslate(Vector3D v) {
+    private FloatVector3D scaleAndTranslate(FloatVector3D v) {
         float x = v.x;
         float y = v.y;
         float SCALE = 35.0f;
@@ -154,7 +154,7 @@ public class RadarPnl extends JPanel {
         float yScaled = y / SCALE;
         float xScaledTranslated = (getWidthHalf() + xScaled);
         float yScaledTranslated = (getHeightHalf() - yScaled);
-        Vector3D v2 = new Vector3D();
+        FloatVector3D v2 = new FloatVector3D();
         v2.x = xScaledTranslated;
         v2.y = yScaledTranslated;
         v2.z = 0f;
@@ -169,18 +169,18 @@ public class RadarPnl extends JPanel {
         return getHeight() / 2.0f;
     }
 
-    private Vector2D getCenter() {
-        Vector2D v = new Vector2D();
+    private FloatVector2D getCenter() {
+        FloatVector2D v = new FloatVector2D();
         v.x = getWidthHalf();
         v.y = getHeightHalf();
         return v;
     }
 
-    private Vector2D getLocalPlayerCenterDiff() {
+    private FloatVector2D getLocalPlayerCenterDiff() {
         if (localPlayer == null) return null;
         if (localPlayer.base == null) return null;
-        Vector3D orig = scaleAndTranslate(localPlayer.localOrigin);
-        Vector2D orig2d = new Vector2D();
+        FloatVector3D orig = scaleAndTranslate(localPlayer.localOrigin);
+        FloatVector2D orig2d = new FloatVector2D();
         orig2d.x = orig.x;
         orig2d.y = orig.y;
         return getCenter().subtract(orig2d);

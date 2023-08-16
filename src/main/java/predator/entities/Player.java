@@ -12,13 +12,13 @@ public class Player {
     public Pointer base;
     //base entity
     public String entityType;
-    public Vector3D localOrigin;
+    public FloatVector3D localOrigin;
     public Integer teamNumber;
     public Integer shieldHealthMax;
     //player
     public Boolean dead;
     public Boolean knocked;
-    public Vector2D viewAngles;
+    public FloatVector2D viewAngles;
     public Integer glowEnable;
     public Integer glowThroughWall;
     public Integer lastTimeVisible;
@@ -27,12 +27,13 @@ public class Player {
     public Integer lastCrosshairsTime_previous;
     public Integer lastCrosshairsTime;
     public Boolean aimedAt;
+    public Boolean isDucking;
     //calculated
     public Boolean isLocalPlayer;
     public Boolean isFriendlyPlayer;
     public Double distanceToLocalPlayer;
-    public Double desiredPitch;
-    public Double desiredYaw;
+    public FloatVector2D desiredViewAngles;
+    public Double distanceToLocalPlayerCrosshairs;
 
     public Player(Integer index, LocalPlayer localPlayer, Settings settings) {
         this.index = index;
@@ -70,19 +71,20 @@ public class Player {
             dead = Memory.readShort(base.share(Pointer.nativeValue(Offsets.OFF_LIFE_STATE))) > 0;
             knocked = Memory.readShort(base.share(Pointer.nativeValue(Offsets.OFF_BLEEDOUT_STATE))) > 0;
             viewAngles = Memory.readFloatVector2D(base.share(Pointer.nativeValue(Offsets.OFF_VIEW_ANGLE)));
+            isDucking = Memory.readShort(base.share(Pointer.nativeValue(Offsets.OFF_DUCK_STATE))) > 0;
         }
 
-        //calculated
+        //calculated values
         if (localPlayer.base != null) {
             isLocalPlayer = localPlayer.base.toString().equals(base.toString());
             isFriendlyPlayer = Objects.equals(localPlayer.teamNumber, teamNumber);
             distanceToLocalPlayer = localPlayer.localOrigin.distance(localOrigin);
-            if (visible) {
-                desiredPitch = calculateDesiredPitch();
-                desiredYaw = calculateDesiredYaw();
+            if (visible) { //heavy calculation to be performed only on the players we can see
+                desiredViewAngles = new FloatVector2D(calculateDesiredPitch().floatValue(), calculateDesiredYaw().floatValue());
+                distanceToLocalPlayerCrosshairs = localPlayer.viewAngles.distance(desiredViewAngles);
             } else {
-                desiredPitch = null;
-                desiredYaw = null;
+                desiredViewAngles = null;
+                distanceToLocalPlayerCrosshairs = null;
             }
         }
     }
@@ -130,17 +132,21 @@ public class Player {
         return entityType != null && entityType.equalsIgnoreCase("dynamic_dummie");
     }
 
-    protected double calculateDesiredYaw() {
-        final Vector2D subtractionVector = localOrigin.toFloatVector2D().subtract(localPlayer.localOrigin.toFloatVector2D());
+    private Double calculateDesiredYaw() {
+        final FloatVector2D subtractionVector = localOrigin.toFloatVector2D().subtract(localPlayer.localOrigin.toFloatVector2D());
         double yawInRadians = Math.atan2(subtractionVector.y, subtractionVector.x);
         return Math.toDegrees(yawInRadians);
     }
 
-    protected double calculateDesiredPitch() {
-        final double locationDeltaZ = localOrigin.z - localPlayer.localOrigin.z;
-        final double distanceBetweenPlayers = localOrigin.distance(localPlayer.localOrigin);
+    private Double calculateDesiredPitch() {
+        FloatVector3D localOriginClone = localOrigin.clone();
+        if (isDucking != null && isDucking && !localPlayer.isDucking)
+            localOriginClone.z -= 30;
+        if (isDucking != null && !isDucking && localPlayer.isDucking)
+            localOriginClone.z += 30;
+        final double locationDeltaZ = localOriginClone.z - localPlayer.localOrigin.z;
+        final double distanceBetweenPlayers = localOriginClone.distance(localPlayer.localOrigin);
         double pitchInRadians = Math.atan2(-locationDeltaZ, distanceBetweenPlayers);
         return Math.toDegrees(pitchInRadians);
     }
-
 }

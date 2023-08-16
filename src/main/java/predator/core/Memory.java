@@ -93,20 +93,20 @@ public class Memory {
         writeMemory(pid, Pointer.nativeValue(pointer), memoryData);
     }
 
-    public static Vector3D readFloatVector3D(Pointer pointer) {
+    public static FloatVector3D readFloatVector3D(Pointer pointer) {
         byte[] memoryData = Memory.readMemory(pid, Pointer.nativeValue(pointer), Float.BYTES * 3);
         if (memoryData.length == 0) throw new RuntimeException(" Empty memoryData");
         byte[] sliceX = Arrays.copyOfRange(memoryData, 0, Float.BYTES);
         byte[] sliceY = Arrays.copyOfRange(memoryData, Float.BYTES, Float.BYTES * 2);
         byte[] sliceZ = Arrays.copyOfRange(memoryData, Float.BYTES * 2, Float.BYTES * 3);
-        Vector3D fv = new Vector3D();
+        FloatVector3D fv = new FloatVector3D();
         fv.x = ByteBuffer.wrap(sliceX).order(ByteOrder.LITTLE_ENDIAN).getFloat();
         fv.y = ByteBuffer.wrap(sliceY).order(ByteOrder.LITTLE_ENDIAN).getFloat();
         fv.z = ByteBuffer.wrap(sliceZ).order(ByteOrder.LITTLE_ENDIAN).getFloat();
         return fv;
     }
 
-    public static void writeFloatVector2D(Pointer pointer, Vector2D vector) {
+    public static void writeFloatVector2D(Pointer pointer, FloatVector2D vector) {
         byte[] slice1 = floatToLittleEndianBytes(vector.x);
         byte[] slice2 = floatToLittleEndianBytes(vector.y);
         byte[] memoryData = new byte[]{
@@ -115,7 +115,7 @@ public class Memory {
         writeMemory(pid, Pointer.nativeValue(pointer), memoryData);
     }
 
-    public static void writeFloatVector3D(Pointer pointer, Vector3D vector) {
+    public static void writeFloatVector3D(Pointer pointer, FloatVector3D vector) {
         byte[] slice1 = floatToLittleEndianBytes(vector.x);
         byte[] slice2 = floatToLittleEndianBytes(vector.y);
         byte[] slice3 = floatToLittleEndianBytes(vector.z);
@@ -126,12 +126,12 @@ public class Memory {
         writeMemory(pid, Pointer.nativeValue(pointer), memoryData);
     }
 
-    public static Vector2D readFloatVector2D(Pointer pointer) {
+    public static FloatVector2D readFloatVector2D(Pointer pointer) {
         byte[] memoryData = Memory.readMemory(pid, Pointer.nativeValue(pointer), Float.BYTES * 2);
         if (memoryData.length == 0) throw new RuntimeException(" Empty memoryData");
         byte[] sliceX = Arrays.copyOfRange(memoryData, 0, Float.BYTES);
         byte[] sliceY = Arrays.copyOfRange(memoryData, Float.BYTES, Float.BYTES * 2);
-        Vector2D fv = new Vector2D();
+        FloatVector2D fv = new FloatVector2D();
         fv.x = ByteBuffer.wrap(sliceX).order(ByteOrder.LITTLE_ENDIAN).getFloat();
         fv.y = ByteBuffer.wrap(sliceY).order(ByteOrder.LITTLE_ENDIAN).getFloat();
         return fv;

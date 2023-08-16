@@ -91,8 +91,10 @@ public class PlayersPnl extends JPanel {
                 cells[currIndex][col++].setText(parse(p.viewAngles.x));
                 cells[currIndex][col++].setText(parse(p.viewAngles.y));
             }
-            cells[currIndex][col++].setText(formatDouble(p.desiredPitch));
-            cells[currIndex][col].setText(formatDouble(p.desiredYaw));
+            if (p.desiredViewAngles != null) {
+                cells[currIndex][col++].setText(formatFloat(p.desiredViewAngles.y));
+                cells[currIndex][col].setText(formatFloat(p.desiredViewAngles.x));
+            }
 
             //color LocalPlayer row
             for (int i = 0; i < cells[currIndex].length; i++)

@@ -20,8 +20,10 @@ public class Offsets {
     public static final Pointer OFF_LIFE_STATE = new Pointer(0x07d0);                                                   //[RecvTable.DT_Player]->m_lifeState
     public static final Pointer OFF_BLEEDOUT_STATE = new Pointer(0x2790);                                               //[RecvTable.DT_Player]->m_bleedoutState
     public static final Pointer OFF_VIEW_ANGLE = new Pointer(0x25e4 - 0x14);                                            //[RecvTable.DT_Player]->m_ammoPoolCapacity - 0x14
+    public static final Pointer OFF_DUCK_STATE = new Pointer(0x2a8c);                                                   //[RecvTable.DT_Player]->m_duckState
     public static final Pointer OFF_LAST_VISIBLE_TIME = new Pointer(0x1a9d + 0x3);                                      //[RecvTable.DT_BaseCombatCharacter]->m_hudInfo_visibilityTestAlwaysPasses + 0x3
     public static final Pointer OFF_LAST_CROSSHAIRS_TIME = new Pointer(0x1a9d + 0x3 + 0x8);                             //[RecvTable.DT_BaseCombatCharacter]->m_hudInfo_visibilityTestAlwaysPasses + 0x3 +0x8
+
     //Current weapon
     //------------------------------------------------------------------------------------------------------------------
     public static final Pointer OFF_WEAPON = new Pointer(0x1a44);                                                       //[RecvTable.DT_Player]->m_latestPrimaryWeapons
