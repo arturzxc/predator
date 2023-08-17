@@ -26,7 +26,7 @@ public class Main {
         LocalPlayerWeapon localPlayerWeapon = new LocalPlayerWeapon(localPlayer);
         PlayerList playerList = new PlayerList(localPlayer, settings);
         DummyList dummyList = new DummyList(localPlayer, settings);
-        Sense sense = new Sense(playerList, dummyList, settings);
+        Sense sense = new Sense(localPlayer, playerList, dummyList, settings);
         TriggerBot triggerBot = new TriggerBot(level, localPlayer, localPlayerWeapon, playerList, dummyList, settings);
         AimBot aimBot = new AimBot(level, localPlayer, playerList, dummyList, settings);
         MainFrame ui = new MainFrame(level, localPlayer, playerList, dummyList, settings);
@@ -41,7 +41,7 @@ public class Main {
                                 dummyList.update();
                             sense.update();
                             triggerBot.update();
-                            aimBot.update();
+//                            aimBot.update();
                         }
                         ui.update(0, level.name);
                     } catch (Exception ex) {

@@ -19,7 +19,12 @@ public class Settings {
         SENSE_CUSTOM_COLOR_INVISIBLE_RED,
         SENSE_CUSTOM_COLOR_INVISIBLE_GREEN,
         SENSE_CUSTOM_COLOR_INVISIBLE_BLUE,
+
         TRIGGERBOT_ON,
+
+        AIMBOT_ON,
+        AIMBOT_FOV,
+        AIMBOT_MAX_DISTANCE_METERS,
     }
 
     private final String filePath = "settings.ini";
@@ -46,7 +51,13 @@ public class Settings {
         map.put(Key.SENSE_CUSTOM_COLOR_INVISIBLE_RED.name(), String.valueOf(1));
         map.put(Key.SENSE_CUSTOM_COLOR_INVISIBLE_GREEN.name(), String.valueOf(0));
         map.put(Key.SENSE_CUSTOM_COLOR_INVISIBLE_BLUE.name(), String.valueOf(0));
+
         map.put(Key.TRIGGERBOT_ON.name(), String.valueOf(true));
+
+        map.put(Key.AIMBOT_ON.name(), String.valueOf(true));
+        map.put(Key.AIMBOT_FOV.name(), String.valueOf(10));
+        map.put(Key.AIMBOT_MAX_DISTANCE_METERS.name(), String.valueOf(100));
+
         verifyAllSettingsLoaded();
     }
 

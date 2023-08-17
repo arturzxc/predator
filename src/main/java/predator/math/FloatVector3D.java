@@ -1,4 +1,5 @@
-package predator.core;
+package predator.math;
+
 
 @SuppressWarnings("unused")
 public class FloatVector3D implements Cloneable {
@@ -42,6 +43,26 @@ public class FloatVector3D implements Cloneable {
 
     public FloatVector2D toFloatVector2D() {
         return new FloatVector2D(x, y);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FloatVector3D that = (FloatVector3D) o;
+
+        if (Float.compare(that.x, x) != 0) return false;
+        if (Float.compare(that.y, y) != 0) return false;
+        return Float.compare(that.z, z) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (x != +0.0f ? Float.floatToIntBits(x) : 0);
+        result = 31 * result + (y != +0.0f ? Float.floatToIntBits(y) : 0);
+        result = 31 * result + (z != +0.0f ? Float.floatToIntBits(z) : 0);
+        return result;
     }
 
     public FloatVector3D clone() {

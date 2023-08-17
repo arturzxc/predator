@@ -1,10 +1,10 @@
 package predator.entities;
 
 import com.sun.jna.Pointer;
-import predator.core.FloatVector2D;
-import predator.core.FloatVector3D;
 import predator.core.Memory;
 import predator.core.Offsets;
+import predator.math.FloatVector2D;
+import predator.math.FloatVector3D;
 
 public class LocalPlayer {
 
@@ -21,10 +21,6 @@ public class LocalPlayer {
     public void update() {
         base = Memory.resolvePointer(Offsets.OFF_REGION.share(Pointer.nativeValue(Offsets.OFF_LOCAL_PLAYER)));
         if (base == null) return;
-        loadFields();
-    }
-
-    public void loadFields() {
         dead = Memory.readShort(base.share(Pointer.nativeValue(Offsets.OFF_LIFE_STATE))) > 0;
         knocked = Memory.readShort(base.share(Pointer.nativeValue(Offsets.OFF_BLEEDOUT_STATE))) > 0;
         localOrigin = Memory.readFloatVector3D(base.share(Pointer.nativeValue(Offsets.OFF_LOCAL_ORIGIN)));

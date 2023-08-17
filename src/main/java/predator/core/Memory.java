@@ -1,6 +1,9 @@
 package predator.core;
 
 import com.sun.jna.Pointer;
+import predator.math.FloatVector2D;
+import predator.math.FloatVector3D;
+import predator.structs.GlowMode;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -58,15 +61,10 @@ public class Memory {
         }
     }
 
-    public static String readString(Pointer pointer, int bytesToRead) {
-        byte[] memoryData = Memory.readMemory(pid, Pointer.nativeValue(pointer), bytesToRead);
-        if (memoryData.length == 0) throw new RuntimeException("String read failed. Empty memoryData");
-        StringBuilder sb = new StringBuilder();
-        for (byte b : memoryData) {
-            if (b == 0) break;
-            sb.append((char) b);
-        }
-        return sb.toString();
+    public static GlowMode readGlowMode(Pointer pointer) {
+        byte[] memoryData = Memory.readMemory(pid, Pointer.nativeValue(pointer), Byte.BYTES * 6);
+        if (memoryData.length == 0) throw new RuntimeException(" Empty memoryData");
+        return new GlowMode(memoryData[0], memoryData[1], memoryData[2], memoryData[3], memoryData[4], memoryData[5]);
     }
 
     public static Short readShort(Pointer pointer) {
@@ -88,7 +86,7 @@ public class Memory {
     }
 
     public static void writeFloat(Pointer pointer, Float num) {
-        byte[] slice1 = floatToLittleEndianBytes(num);
+        byte[] slice1 = floatToBytes(num);
         byte[] memoryData = new byte[]{slice1[3], slice1[2], slice1[1], slice1[0]};
         writeMemory(pid, Pointer.nativeValue(pointer), memoryData);
     }
@@ -106,19 +104,10 @@ public class Memory {
         return fv;
     }
 
-    public static void writeFloatVector2D(Pointer pointer, FloatVector2D vector) {
-        byte[] slice1 = floatToLittleEndianBytes(vector.x);
-        byte[] slice2 = floatToLittleEndianBytes(vector.y);
-        byte[] memoryData = new byte[]{
-                slice1[3], slice1[2], slice1[1], slice1[0],
-                slice2[3], slice2[2], slice2[1], slice2[0]};
-        writeMemory(pid, Pointer.nativeValue(pointer), memoryData);
-    }
-
     public static void writeFloatVector3D(Pointer pointer, FloatVector3D vector) {
-        byte[] slice1 = floatToLittleEndianBytes(vector.x);
-        byte[] slice2 = floatToLittleEndianBytes(vector.y);
-        byte[] slice3 = floatToLittleEndianBytes(vector.z);
+        byte[] slice1 = floatToBytes(vector.x);
+        byte[] slice2 = floatToBytes(vector.y);
+        byte[] slice3 = floatToBytes(vector.z);
         byte[] memoryData = new byte[]{
                 slice1[3], slice1[2], slice1[1], slice1[0],
                 slice2[3], slice2[2], slice2[1], slice2[0],
@@ -135,6 +124,15 @@ public class Memory {
         fv.x = ByteBuffer.wrap(sliceX).order(ByteOrder.LITTLE_ENDIAN).getFloat();
         fv.y = ByteBuffer.wrap(sliceY).order(ByteOrder.LITTLE_ENDIAN).getFloat();
         return fv;
+    }
+
+    public static void writeFloatVector2D(Pointer pointer, FloatVector2D vector) {
+        byte[] slice1 = floatToBytes(vector.x);
+        byte[] slice2 = floatToBytes(vector.y);
+        byte[] memoryData = new byte[]{
+                slice1[3], slice1[2], slice1[1], slice1[0],
+                slice2[3], slice2[2], slice2[1], slice2[0]};
+        writeMemory(pid, Pointer.nativeValue(pointer), memoryData);
     }
 
     public static Double readDouble(Pointer pointer) {
@@ -161,13 +159,24 @@ public class Memory {
         return ByteBuffer.wrap(memoryData).order(ByteOrder.LITTLE_ENDIAN).getLong();
     }
 
-    public static byte[] floatToLittleEndianBytes(float value) {
+    public static String readString(Pointer pointer, int bytesToRead) {
+        byte[] memoryData = Memory.readMemory(pid, Pointer.nativeValue(pointer), bytesToRead);
+        if (memoryData.length == 0) throw new RuntimeException("String read failed. Empty memoryData");
+        StringBuilder sb = new StringBuilder();
+        for (byte b : memoryData) {
+            if (b == 0) break;
+            sb.append((char) b);
+        }
+        return sb.toString();
+    }
+
+    private static byte[] floatToBytes(float value) {
         ByteBuffer buffer = ByteBuffer.allocate(4);
         buffer.putFloat(value);
         return buffer.order(java.nio.ByteOrder.LITTLE_ENDIAN).array();
     }
 
-    public static byte[] intToBytes(int value) {
+    private static byte[] intToBytes(int value) {
         ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES);
         buffer.putInt(value);
         byte[] buff = buffer.order(ByteOrder.LITTLE_ENDIAN).array();
@@ -175,13 +184,13 @@ public class Memory {
         return buff;
     }
 
-    public static byte[] shortToBytes(short value) {
+    private static byte[] shortToBytes(short value) {
         ByteBuffer buffer = ByteBuffer.allocate(Short.BYTES);
         buffer.putShort(value);
         return buffer.order(ByteOrder.LITTLE_ENDIAN).array();
     }
 
-    public static void reverseByteArray(byte[] arr) {
+    private static void reverseByteArray(byte[] arr) {
         int start = 0;
         int end = arr.length - 1;
         while (start < end) {

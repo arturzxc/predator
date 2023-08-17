@@ -1,7 +1,8 @@
 package predator.ui;
 
-import predator.core.*;
 import predator.entities.*;
+import predator.math.FloatVector2D;
+import predator.math.FloatVector3D;
 
 import javax.swing.*;
 import java.awt.*;

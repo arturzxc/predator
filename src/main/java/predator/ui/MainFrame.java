@@ -13,11 +13,13 @@ public class MainFrame extends JFrame {
     private final Level level;
     private final PlayersPnl playersPnl;
     private final DummiesPnl dummiesPnl;
+    private final LocalPlayer localPlayer;
     private final RadarPnl radarPnl;
     private final SettingsPnl settingsPnl;
 
     public MainFrame(Level level, LocalPlayer localPlayer, PlayerList playerList, DummyList dummyList, Settings settings) {
         this.level = level;
+        this.localPlayer = localPlayer;
 
         playersPnl = new PlayersPnl(playerList);
         JScrollPane playersScrollPnl = new JScrollPane();
@@ -31,20 +33,20 @@ public class MainFrame extends JFrame {
         JTabbedPane tabbedPane = new JTabbedPane();
         settingsPnl = new SettingsPnl(settings);
 
-        tabbedPane.addTab("PLAYERS", playersScrollPnl);
         tabbedPane.addTab("DUMMIES", dummiesScrollPnl);
-        tabbedPane.addTab("RADAR", radarPnl);
+        tabbedPane.addTab("PLAYERS", playersScrollPnl);
+//        tabbedPane.addTab("RADAR", radarPnl);
         tabbedPane.addTab("SETTINGS", settingsPnl);
 
         setContentPane(tabbedPane);
-        setSize(700, 800);
+        setSize(1900, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
 
     public void update(int counter, String msg) {
-        if (msg != null) setTitle(msg);
-        else setTitle("Counter: " + counter + " Map: " + level.name);
+        if (localPlayer.base != null)
+            setTitle(localPlayer.localOrigin.toString() + " | " + localPlayer.viewAngles.toString());
         radarPnl.repaint();
         playersPnl.update();
         dummiesPnl.update();

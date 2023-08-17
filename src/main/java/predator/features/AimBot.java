@@ -36,13 +36,15 @@ public class AimBot implements NativeKeyListener {
         Optional<Player> bestTargetOpt;
         if (level.isTrainingArea)
             bestTargetOpt = dummyList.getDummies().stream()
-//                    .filter(e -> e.visible)
+                    .filter(e -> e.visible)
+                    .filter(e -> e.distanceToLocalPlayerCrosshairs < settings.readInteger(Settings.Key.AIMBOT_FOV))
                     .min(Comparator.comparing(e -> e.distanceToLocalPlayerCrosshairs));
         else
             bestTargetOpt = playerList.getEnemyPlayers().stream()
-                    .filter(e -> e.visible)
                     .filter(e -> !e.dead)
                     .filter(e -> !e.knocked)
+                    .filter(e -> e.visible)
+                    .filter(e -> e.distanceToLocalPlayerCrosshairs < settings.readInteger(Settings.Key.AIMBOT_FOV))
                     .min(Comparator.comparing(e -> e.distanceToLocalPlayerCrosshairs));
 
         if (bestTargetOpt.isEmpty()) return;
