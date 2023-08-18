@@ -62,9 +62,19 @@ public class Memory {
     }
 
     public static GlowMode readGlowMode(Pointer pointer) {
-        byte[] memoryData = Memory.readMemory(pid, Pointer.nativeValue(pointer), Byte.BYTES * 6);
+        byte[] memoryData = Memory.readMemory(pid, Pointer.nativeValue(pointer), Byte.BYTES * 4);
         if (memoryData.length == 0) throw new RuntimeException(" Empty memoryData");
-        return new GlowMode(memoryData[0], memoryData[1], memoryData[2], memoryData[3], memoryData[4], memoryData[5]);
+        return new GlowMode(memoryData[3], memoryData[2], memoryData[1], memoryData[0]);
+    }
+
+    public static void writeGlowModeVisible(Pointer pointer, GlowMode glowMode) {
+        byte[] memoryData = new byte[]{124, 6, 127, 100};
+        writeMemory(pid, Pointer.nativeValue(pointer), memoryData);
+    }
+
+    public static void writeGlowModeInvis(Pointer pointer, GlowMode glowMode) {
+        byte[] memoryData = new byte[]{118, 0, 0, 100};
+        writeMemory(pid, Pointer.nativeValue(pointer), memoryData);
     }
 
     public static Short readShort(Pointer pointer) {

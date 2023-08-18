@@ -61,7 +61,7 @@ public class Player {
         glowEnable = Memory.readInteger(base.share(Pointer.nativeValue(Offsets.OFF_GLOW_ENABLE)));
         glowThroughWall = Memory.readInteger(base.share(Pointer.nativeValue(Offsets.OFF_GLOW_THROUGH_WALL)));
         glowColor = Memory.readFloatVector3D(base.share(Pointer.nativeValue(Offsets.OFF_GLOW_COLOR)));
-//        glowMode = Memory.readGlowMode(base.share(Pointer.nativeValue(Offsets.OFF_GLOW_MODE)));
+        glowMode = Memory.readGlowMode(base.share(Pointer.nativeValue(Offsets.OFF_GLOW_MODE)));
         lastTimeVisible_previous = lastTimeVisible;
         lastTimeVisible = Memory.readInteger(base.share(Pointer.nativeValue(Offsets.OFF_LAST_VISIBLE_TIME)));
         visible = !Objects.equals(lastTimeVisible_previous, lastTimeVisible);

@@ -2,31 +2,30 @@ package predator.structs;
 
 public class GlowMode {
 
-    public final Byte insideSlot;
-    public final Byte outlineSlot;
-    public final Byte outlineRadius;
-    public final Byte state;
-    public final Byte entityVisible;
-    public final Byte afterPostPr;
+    public final Byte a;
+    public final Byte b;
+    public final Byte c;
+    public final Byte d;
 
-    public GlowMode(Byte insideSlot, Byte outlineSlot, Byte outlineRadius, Byte state, Byte entityVisible, Byte afterPostPr) {
-        this.insideSlot = insideSlot;
-        this.outlineSlot = outlineSlot;
-        this.outlineRadius = outlineRadius;
-        this.state = state;
-        this.entityVisible = entityVisible;
-        this.afterPostPr = afterPostPr;
+
+    public GlowMode(Byte a, Byte b, Byte c, Byte d) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        this.d = d;
+    }
+
+    public boolean empty() {
+        return a == 0 || b == 0 || c == 0 || d == 0;
     }
 
     @Override
     public String toString() {
         return "GlowMode{" +
-                "insideSlot=" + insideSlot +
-                ", outlineSlot=" + outlineSlot +
-                ", outlineRadius=" + outlineRadius +
-                ", state=" + state +
-                ", entityVisible=" + entityVisible +
-                ", afterPostPr=" + afterPostPr +
+                "a=" + a +
+                ", b=" + b +
+                ", c=" + c +
+                ", d=" + d +
                 '}';
     }
 }

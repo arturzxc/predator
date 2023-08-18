@@ -34,5 +34,5 @@ public class Offsets {
     public static final Pointer OFF_GLOW_ENABLE = new Pointer(0x03f0 + 0x8);                                            //[RecvTable.DT_HighlightSettings]->m_highlightServerContextID + 0x8
     public static final Pointer OFF_GLOW_THROUGH_WALL = new Pointer(0x03f0 + 0x10);                                     //[RecvTable.DT_HighlightSettings]->m_highlightServerContextID + 0x10
     public static final Pointer OFF_GLOW_COLOR = new Pointer(0x200);                                                    //[?]->?
-    public static final Pointer OFF_GLOW_MODE = new Pointer(0x2C0);                                                     //[?]->?
+    public static final Pointer OFF_GLOW_MODE = new Pointer(0x2C4 + 0x30);                                              //[?]->Script_Highlight_GetState + 4
 }

@@ -42,9 +42,23 @@ public class Sense {
                 }
             }
         });
+        playerList.getFriendlyPlayers().forEach(p -> {
+            if (settings.readBoolean(Settings.Key.SENSE_CUSTOM_COLOR_ON)) {
+                if (p.visible) glowVisibleCustom(p);
+                else glowInvisibleCustom(p);
+            } else {
+                if (p.visible) glowVisiblePreset(p);
+                else glowInVisiblePreset(p);
+            }
+        });
         dummyList.getDummies().forEach(p -> {
-            if (p.visible) glowVisiblePreset(p);
-            else glowInVisiblePreset(p);
+            if (settings.readBoolean(Settings.Key.SENSE_CUSTOM_COLOR_ON)) {
+                if (p.visible) glowVisibleCustom(p);
+                else glowInvisibleCustom(p);
+            } else {
+                if (p.visible) glowVisiblePreset(p);
+                else glowInVisiblePreset(p);
+            }
         });
     }
 
@@ -77,7 +91,8 @@ public class Sense {
         if (!p.glowColor.equals(glowColor))
             Memory.writeFloatVector3D(p.base.share(Pointer.nativeValue(Offsets.OFF_GLOW_COLOR)), glowColor);
 
-        Memory.writeFloatVector3D(p.base.share(Pointer.nativeValue(Offsets.OFF_GLOW_COLOR)), glowColor);
+//        if (!p.glowMode.empty())
+        Memory.writeGlowModeVisible(p.base.share(Pointer.nativeValue(Offsets.OFF_GLOW_MODE)), p.glowMode);
     }
 
     private void glowInvisibleCustom(Player p) {
@@ -91,6 +106,9 @@ public class Sense {
                 settings.readFloat(Settings.Key.SENSE_CUSTOM_COLOR_INVISIBLE_BLUE));
         if (!p.glowColor.equals(glowColor))
             Memory.writeFloatVector3D(p.base.share(Pointer.nativeValue(Offsets.OFF_GLOW_COLOR)), glowColor);
+
+//        if (!p.glowMode.empty())
+        Memory.writeGlowModeInvis(p.base.share(Pointer.nativeValue(Offsets.OFF_GLOW_MODE)), p.glowMode);
 
     }
 
