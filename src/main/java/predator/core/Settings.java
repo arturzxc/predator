@@ -1,8 +1,7 @@
 package predator.core;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings("unused")
 public class Settings {
@@ -10,15 +9,25 @@ public class Settings {
     public enum Key {
         SENSE_ON,
         SENSE_MAX_DISTANCE_METERS,
+        SENSE_CUSTOM_COLOR_ON,
+
         SENSE_PRESET_VISIBLE_STYLE,
         SENSE_PRESET_INVISIBLE_STYLE,
-        SENSE_CUSTOM_COLOR_ON,
+
         SENSE_CUSTOM_COLOR_VISIBLE_RED,
         SENSE_CUSTOM_COLOR_VISIBLE_GREEN,
         SENSE_CUSTOM_COLOR_VISIBLE_BLUE,
         SENSE_CUSTOM_COLOR_INVISIBLE_RED,
         SENSE_CUSTOM_COLOR_INVISIBLE_GREEN,
         SENSE_CUSTOM_COLOR_INVISIBLE_BLUE,
+
+        SENSE_CUSTOM_MODE_VISIBLE_BORDER_STYLE,
+        SENSE_CUSTOM_MODE_VISIBLE_BORDER_WIDTH,
+        SENSE_CUSTOM_MODE_VISIBLE_BODY_STYLE,
+
+        SENSE_CUSTOM_MODE_INVISIBLE_BORDER_STYLE,
+        SENSE_CUSTOM_MODE_INVISIBLE_BORDER_WIDTH,
+        SENSE_CUSTOM_MODE_INVISIBLE_BODY_STYLE,
 
         TRIGGERBOT_ON,
 
@@ -42,19 +51,30 @@ public class Settings {
     public void loadDefaultPreferences() {
         map.put(Key.SENSE_ON.name(), String.valueOf(true));
         map.put(Key.SENSE_MAX_DISTANCE_METERS.name(), String.valueOf(200));
-        map.put(Key.SENSE_PRESET_VISIBLE_STYLE.name(), String.valueOf(21));
-        map.put(Key.SENSE_PRESET_INVISIBLE_STYLE.name(), String.valueOf(10));
         map.put(Key.SENSE_CUSTOM_COLOR_ON.name(), String.valueOf(true));
+
+        map.put(Key.SENSE_PRESET_VISIBLE_STYLE.name(), String.valueOf(5));
+        map.put(Key.SENSE_PRESET_INVISIBLE_STYLE.name(), String.valueOf(10));
+
         map.put(Key.SENSE_CUSTOM_COLOR_VISIBLE_RED.name(), String.valueOf(0));
-        map.put(Key.SENSE_CUSTOM_COLOR_VISIBLE_GREEN.name(), String.valueOf(100));
+        map.put(Key.SENSE_CUSTOM_COLOR_VISIBLE_GREEN.name(), String.valueOf(5));
         map.put(Key.SENSE_CUSTOM_COLOR_VISIBLE_BLUE.name(), String.valueOf(0));
-        map.put(Key.SENSE_CUSTOM_COLOR_INVISIBLE_RED.name(), String.valueOf(1));
+
+        map.put(Key.SENSE_CUSTOM_COLOR_INVISIBLE_RED.name(), String.valueOf(5));
         map.put(Key.SENSE_CUSTOM_COLOR_INVISIBLE_GREEN.name(), String.valueOf(0));
         map.put(Key.SENSE_CUSTOM_COLOR_INVISIBLE_BLUE.name(), String.valueOf(0));
 
-        map.put(Key.TRIGGERBOT_ON.name(), String.valueOf(true));
+        map.put(Key.SENSE_CUSTOM_MODE_VISIBLE_BORDER_STYLE.name(), String.valueOf(107));
+        map.put(Key.SENSE_CUSTOM_MODE_VISIBLE_BORDER_WIDTH.name(), String.valueOf(50));
+        map.put(Key.SENSE_CUSTOM_MODE_VISIBLE_BODY_STYLE.name(), String.valueOf(124));
 
-        map.put(Key.AIMBOT_ON.name(), String.valueOf(true));
+        map.put(Key.SENSE_CUSTOM_MODE_INVISIBLE_BORDER_STYLE.name(), String.valueOf(108));
+        map.put(Key.SENSE_CUSTOM_MODE_INVISIBLE_BORDER_WIDTH.name(), String.valueOf(50));
+        map.put(Key.SENSE_CUSTOM_MODE_INVISIBLE_BODY_STYLE.name(), String.valueOf(126));
+
+        map.put(Key.TRIGGERBOT_ON.name(), String.valueOf(false));
+
+        map.put(Key.AIMBOT_ON.name(), String.valueOf(false));
         map.put(Key.AIMBOT_FOV.name(), String.valueOf(10));
         map.put(Key.AIMBOT_MAX_DISTANCE_METERS.name(), String.valueOf(100));
 
@@ -68,8 +88,14 @@ public class Settings {
     }
 
     private void savePreferencesToFile() {
+        // sort the map by key
+        List<String> keys = new ArrayList<>(map.keySet());
+        Collections.sort(keys);
+        Map<String, String> sortedMap = new LinkedHashMap<>();
+        for (String key : keys) sortedMap.put(key, map.get(key));
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            for (Map.Entry<String, String> entry : map.entrySet()) {
+            for (Map.Entry<String, String> entry : sortedMap.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
                 writer.write(key + "=" + value);
@@ -105,6 +131,10 @@ public class Settings {
 
     public Short readShort(Key prefEnm) {
         return Short.parseShort(map.get(prefEnm.name()));
+    }
+
+    public Byte readByte(Key prefEnm) {
+        return Byte.parseByte(map.get(prefEnm.name()));
     }
 
     public Integer readInteger(Key prefEnm) {

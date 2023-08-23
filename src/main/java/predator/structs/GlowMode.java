@@ -2,30 +2,43 @@ package predator.structs;
 
 public class GlowMode {
 
-    public final Byte a;
-    public final Byte b;
-    public final Byte c;
-    public final Byte d;
+    public final Byte bodyStyle;
+    public final Byte borderStyle;
+    public final Byte borderWidth;
 
 
-    public GlowMode(Byte a, Byte b, Byte c, Byte d) {
-        this.a = a;
-        this.b = b;
-        this.c = c;
-        this.d = d;
+    public GlowMode(Byte bodyStyle, Byte borderStyle, Byte borderWidth) {
+        this.bodyStyle = bodyStyle;
+        this.borderStyle = borderStyle;
+        this.borderWidth = borderWidth;
     }
 
-    public boolean empty() {
-        return a == 0 || b == 0 || c == 0 || d == 0;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GlowMode glowMode = (GlowMode) o;
+
+        if (!bodyStyle.equals(glowMode.bodyStyle)) return false;
+        if (!borderStyle.equals(glowMode.borderStyle)) return false;
+        return borderWidth.equals(glowMode.borderWidth);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = bodyStyle.hashCode();
+        result = 31 * result + borderStyle.hashCode();
+        result = 31 * result + borderWidth.hashCode();
+        return result;
     }
 
     @Override
     public String toString() {
         return "GlowMode{" +
-                "a=" + a +
-                ", b=" + b +
-                ", c=" + c +
-                ", d=" + d +
+                "bodyStyle=" + bodyStyle +
+                ", borderStyle=" + borderStyle +
+                ", borderWidth=" + borderWidth +
                 '}';
     }
 }

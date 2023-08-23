@@ -77,7 +77,7 @@ public class Player {
         if (localPlayer.base != null) {
             isLocalPlayer = localPlayer.base.toString().equals(base.toString());
             isFriendlyPlayer = Objects.equals(localPlayer.teamNumber, teamNumber);
-            distanceToLocalPlayer = localPlayer.localOrigin.distance(localOrigin);
+//            distanceToLocalPlayer = localPlayer.localOrigin.distance(localOrigin);
             if (visible) {
 //                desiredViewAngles = new FloatVector2D(Calc.calcPitch(localPlayer.localOrigin, localOrigin), Calc.calcYaw(localPlayer.localOrigin, localOrigin));
 //                distanceToLocalPlayerCrosshairs = localPlayer.viewAngles.distance(desiredViewAngles);

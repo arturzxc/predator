@@ -28,6 +28,7 @@ public class AimBot implements NativeKeyListener {
     }
 
     public void update() {
+        if (!settings.readBoolean(Settings.Key.AIMBOT_ON)) return;
         if (!triggerButtonDown) return;
         if (localPlayer.base == null) return;
         if (localPlayer.dead == null || localPlayer.dead) return;

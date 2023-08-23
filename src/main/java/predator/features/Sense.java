@@ -4,12 +4,12 @@ import com.sun.jna.Pointer;
 import predator.core.Memory;
 import predator.core.Offsets;
 import predator.core.Settings;
-import predator.core.UnitConverter;
 import predator.entities.DummyList;
 import predator.entities.LocalPlayer;
 import predator.entities.Player;
 import predator.entities.PlayerList;
 import predator.math.FloatVector3D;
+import predator.structs.GlowMode;
 
 public class Sense {
 
@@ -30,19 +30,9 @@ public class Sense {
         if (localPlayer.base == null) return;
         final int MAX_DISTANCE = settings.readInteger(Settings.Key.SENSE_MAX_DISTANCE_METERS);
         playerList.getEnemyPlayers().forEach(p -> {
-            if (!localPlayer.dead && p.distanceToLocalPlayer > UnitConverter.convertMetersToHammerUnits(MAX_DISTANCE)) {
-                glowStop(p);
-            } else {
-                if (settings.readBoolean(Settings.Key.SENSE_CUSTOM_COLOR_ON)) {
-                    if (p.visible) glowVisibleCustom(p);
-                    else glowInvisibleCustom(p);
-                } else {
-                    if (p.visible) glowVisiblePreset(p);
-                    else glowInVisiblePreset(p);
-                }
-            }
-        });
-        playerList.getFriendlyPlayers().forEach(p -> {
+//            if (!localPlayer.dead && p.distanceToLocalPlayer > UnitConverter.convertMetersToHammerUnits(MAX_DISTANCE)) {
+//                glowStop(p);
+//            } else {
             if (settings.readBoolean(Settings.Key.SENSE_CUSTOM_COLOR_ON)) {
                 if (p.visible) glowVisibleCustom(p);
                 else glowInvisibleCustom(p);
@@ -50,6 +40,7 @@ public class Sense {
                 if (p.visible) glowVisiblePreset(p);
                 else glowInVisiblePreset(p);
             }
+//            }
         });
         dummyList.getDummies().forEach(p -> {
             if (settings.readBoolean(Settings.Key.SENSE_CUSTOM_COLOR_ON)) {
@@ -91,8 +82,12 @@ public class Sense {
         if (!p.glowColor.equals(glowColor))
             Memory.writeFloatVector3D(p.base.share(Pointer.nativeValue(Offsets.OFF_GLOW_COLOR)), glowColor);
 
-//        if (!p.glowMode.empty())
-        Memory.writeGlowModeVisible(p.base.share(Pointer.nativeValue(Offsets.OFF_GLOW_MODE)), p.glowMode);
+//        GlowMode glowMode = new GlowMode(
+//                settings.readByte(Settings.Key.SENSE_CUSTOM_MODE_VISIBLE_BODY_STYLE),
+//                settings.readByte(Settings.Key.SENSE_CUSTOM_MODE_VISIBLE_BORDER_STYLE),
+//                settings.readByte(Settings.Key.SENSE_CUSTOM_MODE_VISIBLE_BORDER_WIDTH));
+//        if (!p.glowMode.equals(glowMode))
+//            Memory.writeGlowMode(p.base.share(Pointer.nativeValue(Offsets.OFF_GLOW_MODE)), glowMode);
     }
 
     private void glowInvisibleCustom(Player p) {
@@ -107,9 +102,12 @@ public class Sense {
         if (!p.glowColor.equals(glowColor))
             Memory.writeFloatVector3D(p.base.share(Pointer.nativeValue(Offsets.OFF_GLOW_COLOR)), glowColor);
 
-//        if (!p.glowMode.empty())
-        Memory.writeGlowModeInvis(p.base.share(Pointer.nativeValue(Offsets.OFF_GLOW_MODE)), p.glowMode);
-
+//        GlowMode glowMode = new GlowMode(
+//                settings.readByte(Settings.Key.SENSE_CUSTOM_MODE_INVISIBLE_BODY_STYLE),
+//                settings.readByte(Settings.Key.SENSE_CUSTOM_MODE_INVISIBLE_BORDER_STYLE),
+//                settings.readByte(Settings.Key.SENSE_CUSTOM_MODE_INVISIBLE_BORDER_WIDTH));
+//        if (!p.glowMode.equals(glowMode))
+//            Memory.writeGlowMode(p.base.share(Pointer.nativeValue(Offsets.OFF_GLOW_MODE)), glowMode);
     }
 
     private void glowStop(Player p) {

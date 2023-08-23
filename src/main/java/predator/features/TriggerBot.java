@@ -2,6 +2,7 @@ package predator.features;
 
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import predator.core.Settings;
+import predator.core.UnitConverter;
 import predator.entities.*;
 
 import java.awt.*;
@@ -39,17 +40,21 @@ public class TriggerBot implements NativeKeyListener {
         if (localPlayer.inZoom == null || !localPlayer.inZoom) return;
         if (localPlayerWeapon.semiAuto == null || !localPlayerWeapon.semiAuto) return;
 
+        final int MAX_DISTANCE = settings.readInteger(Settings.Key.SENSE_MAX_DISTANCE_METERS);
+
         boolean targetAcquired;
         if (level.isTrainingArea)
             targetAcquired = !dummyList.getDummies().stream()
                     .filter(p -> p.visible != null && p.visible)
                     .filter(p -> p.aimedAt != null && p.aimedAt)
+                    .filter(p -> p.distanceToLocalPlayer < UnitConverter.convertMetersToHammerUnits(MAX_DISTANCE))
                     .toList().isEmpty();
         else
             targetAcquired = !playerList.getEnemyPlayers().stream()
                     .filter(p -> p.visible != null && p.visible)
                     .filter(p -> p.knocked != null && !p.knocked)
                     .filter(p -> p.aimedAt != null && p.aimedAt)
+                    .filter(p -> p.distanceToLocalPlayer < UnitConverter.convertMetersToHammerUnits(MAX_DISTANCE))
                     .toList().isEmpty();
 
         if (targetAcquired)

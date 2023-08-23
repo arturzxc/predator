@@ -15,31 +15,32 @@ public class MainFrame extends JFrame {
     private final DummiesPnl dummiesPnl;
     private final LocalPlayer localPlayer;
     private final RadarPnl radarPnl;
-    private final SettingsPnl settingsPnl;
 
     public MainFrame(Level level, LocalPlayer localPlayer, PlayerList playerList, DummyList dummyList, Settings settings) {
         this.level = level;
         this.localPlayer = localPlayer;
 
-        playersPnl = new PlayersPnl(playerList);
-        JScrollPane playersScrollPnl = new JScrollPane();
-        playersScrollPnl.setViewportView(playersPnl);
-
-        dummiesPnl = new DummiesPnl(dummyList);
-        JScrollPane dummiesScrollPnl = new JScrollPane();
-        dummiesScrollPnl.setViewportView(dummiesPnl);
-
-        radarPnl = new RadarPnl(level, localPlayer, playerList, dummyList);
+        //main container
         JTabbedPane tabbedPane = new JTabbedPane();
-        settingsPnl = new SettingsPnl(settings);
-
-        tabbedPane.addTab("DUMMIES", dummiesScrollPnl);
-        tabbedPane.addTab("PLAYERS", playersScrollPnl);
-//        tabbedPane.addTab("RADAR", radarPnl);
-        tabbedPane.addTab("SETTINGS", settingsPnl);
-
         setContentPane(tabbedPane);
-        setSize(1900, 300);
+
+        //sense settings panel
+        tabbedPane.addTab("SENSE", new JScrollPane(new SensePnl(settings)));
+
+        //players panel
+        playersPnl = new PlayersPnl(playerList);
+        tabbedPane.addTab("PLAYERS", new JScrollPane(playersPnl));
+
+        //dummy panel
+        dummiesPnl = new DummiesPnl(dummyList);
+        tabbedPane.addTab("DUMMIES", new JScrollPane(dummiesPnl));
+
+        //radar panel
+        radarPnl = new RadarPnl(level, localPlayer, playerList, dummyList);
+        tabbedPane.addTab("RADAR", radarPnl);
+
+        //finalise and show
+        setSize(600, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
